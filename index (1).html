@@ -1,0 +1,444 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>דו"ח ציות דיגיטלי | אור שרון</title>
+<link href="https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;500;700;900&family=Orbitron:wght@700;900&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --cyan:#00e5ff;--cyan2:rgba(0,229,255,0.12);
+  --red:#ff4444;--red2:rgba(255,68,68,0.12);
+  --green:#00e676;--green2:rgba(0,230,118,0.1);
+  --amber:#ffb700;--bg:#020a18;--s1:#071428;
+  --border:rgba(0,229,255,0.1);--text:#e8f4fd;--muted:#4a7fa5;
+}
+html{scroll-behavior:smooth}
+body{font-family:'Heebo',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;direction:rtl;overflow-x:hidden;}
+
+/* GRID */
+body::before{content:'';position:fixed;inset:0;z-index:0;
+  background-image:linear-gradient(rgba(0,229,255,0.025) 1px,transparent 1px),linear-gradient(90deg,rgba(0,229,255,0.025) 1px,transparent 1px);
+  background-size:56px 56px;pointer-events:none;}
+
+/* ORBS */
+.orb{position:fixed;border-radius:50%;pointer-events:none;z-index:0;}
+.orb1{width:700px;height:700px;top:-200px;right:-200px;background:radial-gradient(circle,rgba(0,180,216,0.09) 0%,transparent 70%);}
+.orb2{width:500px;height:500px;bottom:-150px;left:-150px;background:radial-gradient(circle,rgba(255,59,59,0.07) 0%,transparent 70%);}
+
+/* HEADER */
+header{position:sticky;top:0;z-index:50;background:rgba(2,10,24,0.88);backdrop-filter:blur(24px);border-bottom:1px solid var(--border);padding:1rem 1.5rem;}
+.header-inner{max-width:64rem;margin:0 auto;display:flex;justify-content:space-between;align-items:center;gap:1rem;flex-wrap:wrap;}
+.logo{font-family:'Orbitron',monospace;font-size:.78rem;font-weight:700;letter-spacing:.12em;background:linear-gradient(90deg,var(--cyan),#60a5fa);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+.wa-btn{display:inline-flex;align-items:center;gap:.5rem;background:linear-gradient(135deg,#25d366,#075e54);color:#fff;font-family:'Heebo',sans-serif;font-weight:700;font-size:.82rem;padding:.55rem 1.2rem;border-radius:.6rem;border:none;cursor:pointer;text-decoration:none;transition:all .2s;box-shadow:0 0 22px rgba(37,211,102,0.28);white-space:nowrap;}
+.wa-btn:hover{transform:translateY(-1px);box-shadow:0 0 35px rgba(37,211,102,0.45);}
+
+/* MAIN */
+main{position:relative;z-index:1;max-width:62rem;margin:0 auto;padding:3rem 1.25rem 5rem;}
+
+/* HERO */
+.hero{text-align:center;margin-bottom:2.5rem;animation:up .6s ease both;}
+@keyframes up{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:translateY(0)}}
+.scan-pill{display:inline-flex;align-items:center;gap:.5rem;background:rgba(0,229,255,0.06);border:1px solid rgba(0,229,255,0.18);color:var(--cyan);font-size:.68rem;font-weight:700;letter-spacing:.15em;padding:.3rem 1rem;border-radius:99px;text-transform:uppercase;margin-bottom:1rem;}
+.pulse{width:7px;height:7px;border-radius:50%;background:var(--cyan);animation:pulse 1.4s ease-in-out infinite;}
+@keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.3;transform:scale(.7)}}
+.hero h1{font-size:clamp(1.8rem,5vw,3rem);font-weight:900;line-height:1.15;margin-bottom:.6rem;}
+.grad{background:linear-gradient(135deg,var(--cyan),#60a5fa,#a78bfa);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+.hero-sub{color:var(--muted);font-size:.95rem;margin-bottom:.3rem;}
+.hero-client{font-size:1.25rem;font-weight:900;color:var(--cyan);text-shadow:0 0 30px rgba(0,229,255,0.4);margin-bottom:.25rem;}
+.hero-url{font-size:.78rem;color:#2d6a8a;}
+
+/* RISK */
+.risk-card{background:linear-gradient(135deg,rgba(255,68,68,0.07),rgba(255,68,68,0.02));border:1px solid rgba(255,68,68,0.22);border-radius:1.75rem;padding:2.5rem 2rem;margin-bottom:2rem;text-align:center;box-shadow:0 0 60px rgba(255,68,68,0.06),inset 0 1px 0 rgba(255,255,255,0.04);animation:up .6s ease .1s both;}
+.ring-wrap{display:flex;justify-content:center;margin-bottom:1.25rem;}
+.ring-box{position:relative;width:130px;height:130px;}
+.ring-svg{transform:rotate(-90deg);}
+.ring-bg{fill:none;stroke:rgba(255,68,68,0.1);stroke-width:7;}
+.ring-fill{fill:none;stroke:var(--red);stroke-width:7;stroke-linecap:round;stroke-dasharray:376;stroke-dashoffset:376;filter:drop-shadow(0 0 10px rgba(255,68,68,0.6));transition:stroke-dashoffset 1.6s cubic-bezier(.4,0,.2,1);}
+.ring-num{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;font-family:'Orbitron',monospace;font-size:2rem;font-weight:900;color:var(--red);text-shadow:0 0 25px rgba(255,68,68,0.6);}
+.ring-num small{font-size:.48rem;font-weight:700;color:#ff8080;letter-spacing:.06em;margin-top:.1rem;}
+.risk-badge{display:inline-flex;align-items:center;gap:.5rem;color:#ff8080;font-size:1.05rem;font-weight:700;margin-bottom:.75rem;}
+.risk-desc{color:var(--muted);font-size:.88rem;line-height:1.8;max-width:36rem;margin:0 auto;}
+.risk-desc strong{color:#c8dff0;}
+
+/* STATS */
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem;margin-bottom:2rem;animation:up .6s ease .15s both;}
+@media(max-width:400px){.stats{grid-template-columns:1fr;}}
+.stat{background:rgba(7,20,40,0.9);border:1px solid var(--border);border-radius:1.1rem;padding:1.35rem;text-align:center;}
+.stat-n{font-size:2.2rem;font-weight:900;font-family:'Orbitron',monospace;line-height:1;}
+.stat-l{font-size:.68rem;color:var(--muted);margin-top:.3rem;font-weight:500;}
+.sr .stat-n{color:var(--red);text-shadow:0 0 20px rgba(255,68,68,0.4);}
+.sa .stat-n{color:var(--amber);text-shadow:0 0 20px rgba(255,183,0,0.3);}
+.sc .stat-n{color:var(--cyan);text-shadow:0 0 20px rgba(0,229,255,0.3);}
+
+/* ISSUES LABEL */
+.sec-label{font-size:.72rem;font-weight:700;color:var(--muted);letter-spacing:.1em;text-transform:uppercase;margin-bottom:1rem;padding:0 .25rem;display:flex;align-items:center;gap:.5rem;}
+.sec-label::before{content:'';flex:1;height:1px;background:linear-gradient(90deg,transparent,var(--border));}
+.sec-label::after{content:'';flex:1;height:1px;background:linear-gradient(270deg,transparent,var(--border));}
+
+/* ISSUES GRID */
+.issues{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:2.5rem;animation:up .6s ease .2s both;}
+@media(max-width:540px){.issues{grid-template-columns:1fr;}}
+.issue{background:rgba(7,20,40,0.85);border:1px solid rgba(255,255,255,0.06);border-radius:1.1rem;padding:1.2rem 1.35rem;cursor:pointer;display:flex;justify-content:space-between;align-items:center;gap:.875rem;transition:all .22s;position:relative;overflow:hidden;}
+.issue::before{content:'';position:absolute;inset:0;opacity:0;transition:opacity .22s;}
+.issue.missing::before{background:linear-gradient(135deg,rgba(255,68,68,0.05),transparent);}
+.issue.present::before{background:linear-gradient(135deg,rgba(0,230,118,0.04),transparent);}
+.issue.missing:hover{border-color:rgba(255,68,68,0.35);transform:translateY(-3px);box-shadow:0 14px 35px rgba(0,0,0,0.4),0 0 0 1px rgba(255,68,68,0.1);}
+.issue.missing:hover::before{opacity:1;}
+.issue.present{cursor:default;border-color:rgba(0,230,118,0.12);}
+.issue.present::before{opacity:1;}
+.il{display:flex;align-items:center;gap:.875rem;}
+.iico{font-size:1.5rem;flex-shrink:0;line-height:1;transition:transform .2s;}
+.issue.missing:hover .iico{transform:scale(1.15);}
+.ititle{font-weight:700;font-size:.9rem;color:var(--text);margin-bottom:.2rem;}
+.isub{font-size:.7rem;color:var(--muted);}
+.tag{font-size:.65rem;font-weight:700;padding:.25rem .6rem;border-radius:.35rem;white-space:nowrap;flex-shrink:0;letter-spacing:.03em;}
+.tag-miss{background:rgba(255,68,68,0.12);color:#ff8080;border:1px solid rgba(255,68,68,0.25);}
+.tag-ok{background:rgba(0,230,118,0.1);color:#00e676;border:1px solid rgba(0,230,118,0.22);}
+.issue-full{grid-column:span 2;}
+@media(max-width:540px){.issue-full{grid-column:span 1;}}
+
+/* PACKAGE */
+.pkg{background:linear-gradient(135deg,rgba(0,229,255,0.05),rgba(96,165,250,0.04));border:1px solid rgba(0,229,255,0.18);border-radius:1.75rem;padding:2rem;margin-bottom:2rem;box-shadow:0 0 60px rgba(0,229,255,0.05),inset 0 1px 0 rgba(255,255,255,0.04);animation:up .6s ease .25s both;}
+.pkg-top{display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:.875rem;margin-bottom:1.5rem;}
+.pkg-title{font-size:1.2rem;font-weight:900;}
+.pkg-title span{background:linear-gradient(135deg,var(--cyan),#60a5fa);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+.pkg-sub{font-size:.77rem;color:var(--muted);margin-top:.3rem;}
+.pkg-badge{background:rgba(0,200,83,0.1);border:1px solid rgba(0,200,83,0.25);color:#00e676;font-size:.68rem;font-weight:700;padding:.3rem .75rem;border-radius:.4rem;white-space:nowrap;}
+.price-block{text-align:center;padding:1.5rem 0;border-top:1px solid var(--border);border-bottom:1px solid var(--border);margin-bottom:1.5rem;}
+.price-num{font-size:3.2rem;font-weight:900;font-family:'Orbitron',monospace;background:linear-gradient(135deg,var(--cyan),#60a5fa);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;line-height:1;}
+.price-note{font-size:.75rem;color:var(--muted);margin-top:.4rem;}
+.inc-title{font-size:.68rem;font-weight:700;color:var(--muted);letter-spacing:.12em;text-transform:uppercase;margin-bottom:.875rem;}
+.inc-grid{display:grid;grid-template-columns:1fr 1fr;gap:.6rem;}
+@media(max-width:480px){.inc-grid{grid-template-columns:1fr;}}
+.inc-item{display:flex;align-items:flex-start;gap:.55rem;font-size:.82rem;color:#b8d4e8;line-height:1.45;}
+.inc-item span.ck{color:var(--green);flex-shrink:0;font-size:.9rem;}
+.disclaimer{background:rgba(255,183,0,0.05);border:1px solid rgba(255,183,0,0.15);border-radius:.75rem;padding:.875rem 1rem;margin-top:1.25rem;font-size:.72rem;color:#fbbf24;line-height:1.65;}
+
+/* CTA */
+.cta{text-align:center;animation:up .6s ease .3s both;}
+.cta-main{display:inline-flex;align-items:center;gap:.875rem;background:linear-gradient(135deg,#25d366,#075e54);color:#fff;font-family:'Heebo',sans-serif;font-weight:900;font-size:1.05rem;padding:1rem 2.5rem;border-radius:1rem;border:none;cursor:pointer;text-decoration:none;transition:all .25s;margin-bottom:1rem;box-shadow:0 0 40px rgba(37,211,102,0.25);}
+.cta-main:hover{transform:translateY(-2px);box-shadow:0 0 60px rgba(37,211,102,0.45);}
+.wa-ico{font-size:1.4rem;}
+.contact-row{font-size:.8rem;color:var(--muted);display:flex;align-items:center;justify-content:center;gap:1rem;flex-wrap:wrap;}
+.contact-row a{color:var(--cyan);text-decoration:none;transition:color .15s;}
+.contact-row a:hover{color:#fff;}
+
+/* FOOTER */
+footer{position:relative;z-index:1;border-top:1px solid rgba(255,255,255,0.04);padding:1.75rem;text-align:center;color:var(--muted);font-size:.7rem;line-height:1.9;}
+footer strong{color:#7799bb;}
+
+/* MODAL */
+.mo{display:none;position:fixed;inset:0;z-index:200;background:rgba(2,8,20,0.94);backdrop-filter:blur(16px);align-items:center;justify-content:center;padding:1.25rem;}
+.mo.open{display:flex;}
+.mb{background:var(--s1);border:1px solid rgba(0,229,255,0.12);border-radius:1.35rem;width:100%;max-width:34rem;max-height:90vh;overflow-y:auto;animation:mIn .24s ease;box-shadow:0 30px 80px rgba(0,0,0,0.6);}
+@keyframes mIn{from{opacity:0;transform:translateY(20px) scale(.96)}to{opacity:1;transform:none}}
+.mh{padding:1.375rem 1.5rem 1rem;border-bottom:1px solid rgba(255,255,255,0.05);display:flex;justify-content:space-between;align-items:flex-start;gap:.75rem;}
+.mh-l h2{font-size:1rem;font-weight:900;margin-bottom:.2rem;display:flex;align-items:center;gap:.5rem;}
+.mh-l p{font-size:.72rem;color:var(--muted);}
+.mc-x{background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.07);color:var(--muted);width:1.875rem;height:1.875rem;border-radius:.4rem;cursor:pointer;font-size:1.1rem;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:all .15s;line-height:1;}
+.mc-x:hover{background:rgba(255,68,68,0.15);border-color:rgba(255,68,68,0.3);color:var(--red);}
+.mbody{padding:1.375rem 1.5rem;}
+.rpill{display:inline-flex;align-items:center;gap:.4rem;background:rgba(255,68,68,0.09);color:#ff8080;border:1px solid rgba(255,68,68,0.22);font-size:.68rem;font-weight:700;padding:.25rem .65rem;border-radius:.35rem;margin-bottom:1rem;}
+.ms{margin-bottom:1.1rem;}
+.ms h4{font-size:.68rem;font-weight:700;color:var(--muted);letter-spacing:.1em;text-transform:uppercase;margin-bottom:.5rem;}
+.ms p{font-size:.84rem;color:#8fafc8;line-height:1.75;}
+.ibox{background:rgba(0,229,255,0.04);border:1px solid rgba(0,229,255,0.12);border-radius:.6rem;padding:.875rem 1rem;font-size:.8rem;color:#7dd3fc;line-height:1.65;}
+.ibox strong{color:var(--cyan);}
+.lockbox{background:linear-gradient(135deg,rgba(255,183,0,0.07),rgba(255,68,68,0.05));border:2px solid rgba(255,183,0,0.28);border-radius:1rem;padding:1.35rem 1.25rem;margin:.875rem 0;text-align:center;}
+.lock-ico{font-size:2rem;display:block;margin-bottom:.5rem;}
+.lock-t{font-size:.95rem;font-weight:900;color:#fbbf24;margin-bottom:.4rem;}
+.lock-d{font-size:.76rem;color:#7a9ab5;line-height:1.65;}
+.mfoot{padding:.875rem 1.5rem 1.375rem;border-top:1px solid rgba(255,255,255,0.04);display:flex;gap:.75rem;flex-wrap:wrap;}
+.btn-mc{flex:1;padding:.625rem;border-radius:.5rem;border:1px solid rgba(255,255,255,0.07);background:rgba(255,255,255,0.03);color:#5a7a94;font-family:'Heebo',sans-serif;font-size:.82rem;font-weight:700;cursor:pointer;transition:all .15s;}
+.btn-mc:hover{border-color:rgba(0,229,255,0.25);color:var(--cyan);}
+.btn-mwa{flex:2;padding:.625rem;border-radius:.5rem;background:linear-gradient(135deg,#25d366,#075e54);color:#fff;font-family:'Heebo',sans-serif;font-size:.84rem;font-weight:700;border:none;cursor:pointer;text-decoration:none;display:flex;align-items:center;justify-content:center;gap:.5rem;box-shadow:0 0 20px rgba(37,211,102,0.2);transition:all .15s;}
+.btn-mwa:hover{box-shadow:0 0 35px rgba(37,211,102,0.4);}
+::-webkit-scrollbar{width:4px;}
+::-webkit-scrollbar-track{background:transparent;}
+::-webkit-scrollbar-thumb{background:rgba(0,229,255,0.1);border-radius:2px;}
+</style>
+</head>
+<body>
+<div class="orb orb1"></div>
+<div class="orb orb2"></div>
+
+<header>
+  <div class="header-inner">
+    <div class="logo">OR SHARON | BUSINESS AUTOMATIONS</div>
+    <a id="waHeader" href="https://wa.me/972537206261" target="_blank" class="wa-btn">
+      💬 דברו עם אור עכשיו
+    </a>
+  </div>
+</header>
+
+<main>
+  <div class="hero">
+    <div class="scan-pill"><span class="pulse"></span> Compliance Scan · 2026</div>
+    <h1>דו"ח ציות <span class="grad">דיגיטלי</span> רשמי</h1>
+    <p class="hero-sub">נסרק עבור:</p>
+    <p class="hero-client" id="clientName">טוען...</p>
+    <p class="hero-url" id="clientUrl"></p>
+  </div>
+
+  <div class="risk-card">
+    <div class="ring-wrap">
+      <div class="ring-box">
+        <svg class="ring-svg" viewBox="0 0 120 120" width="130" height="130">
+          <circle class="ring-bg" cx="60" cy="60" r="54"/>
+          <circle class="ring-fill" id="ringEl" cx="60" cy="60" r="54"/>
+        </svg>
+        <div class="ring-num" id="scoreEl">0%<small>ציות</small></div>
+      </div>
+    </div>
+    <div class="risk-badge">⚠️ <span id="riskLabel">רמת סיכון קריטית — תיקון 13 (2026)</span></div>
+    <p class="risk-desc">האתר שלכם חשוף לקנסות מנהליים ותביעות אזרחיות לפי <strong>תיקון 13 לחוק הגנת הפרטיות</strong> ו<strong>חוק הנגישות הדיגיטלי</strong>. כל יום ללא טיפול מגדיל את החשיפה המשפטית.</p>
+  </div>
+
+  <div class="stats">
+    <div class="stat sr"><div class="stat-n" id="critN">0</div><div class="stat-l">ליקויים קריטיים</div></div>
+    <div class="stat sa"><div class="stat-n" id="okN">0</div><div class="stat-l">סעיפים תקינים</div></div>
+    <div class="stat sc"><div class="stat-n">5</div><div class="stat-l">סעיפים נבדקו</div></div>
+  </div>
+
+  <div class="sec-label">לחץ על ליקוי לפירוט והפתרון</div>
+  <div class="issues" id="issuesGrid"></div>
+
+  <div class="pkg">
+    <div class="pkg-top">
+      <div>
+        <div class="pkg-title">חבילת <span>הגנה מלאה DFY</span></div>
+        <div class="pkg-sub">Done For You — אנחנו מטפלים בהכל תוך 3 ימי עסקים</div>
+      </div>
+      <div class="pkg-badge">✅ תיקון 13 + תקן AA</div>
+    </div>
+    <div class="price-block">
+      <div class="price-num">₪1,299</div>
+      <div class="price-note">תשלום חד פעמי · ללא דמי מנוי · ללא הפתעות</div>
+    </div>
+    <div class="inc-title">מה כלול בחבילה:</div>
+    <div class="inc-grid">
+      <div class="inc-item"><span class="ck">✅</span><span>ניסוח מדיניות פרטיות מותאמת אישית</span></div>
+      <div class="inc-item"><span class="ck">✅</span><span>ניסוח תנאי שימוש + הגבלת אחריות</span></div>
+      <div class="inc-item"><span class="ck">✅</span><span>הזרקת קוד באנר קוקיז חוקי</span></div>
+      <div class="inc-item"><span class="ck">✅</span><span>נעילת טפסים — V חובה לפני שליחה</span></div>
+      <div class="inc-item"><span class="ck">✅</span><span>סרגל נגישות חוקי תקן AA</span></div>
+      <div class="inc-item"><span class="ck">✅</span><span>הצהרת נגישות + העלאה לאתר</span></div>
+      <div class="inc-item"><span class="ck">✅</span><span>העלאת עמודי תקנון לאתר</span></div>
+      <div class="inc-item"><span class="ck">✅</span><span>ביצוע מלא תוך 3 ימי עסקים</span></div>
+    </div>
+    <div class="disclaimer">
+      ⚠️ <strong>הבהרה חשובה:</strong> החבילה תקפה לאתר ולתוכן הקיים בלבד במועד ההתקשרות. שינויים עתידיים, תוספת עמודים או שינויי חקיקה יחייבו עדכון בתמחור נפרד. אור שרון אינה משרד עורכי דין ואינה נושאת אחריות משפטית ישירה.
+    </div>
+  </div>
+
+  <div class="cta">
+    <a id="waMain" href="https://wa.me/972537206261" target="_blank" class="cta-main">
+      <span class="wa-ico">💬</span> אני רוצה לטפל בזה עכשיו
+    </a>
+    <div class="contact-row">
+      <span>📞 <a href="tel:0537206261">053-720-6261</a></span>
+      <span>✉️ <a href="mailto:fcorsha420@gmail.com">fcorsha420@gmail.com</a></span>
+    </div>
+  </div>
+</main>
+
+<footer>
+  <strong>OR SHARON | BUSINESS AUTOMATIONS</strong><br>
+  דו"ח זה הופק אוטומטית על בסיס סריקה טכנולוגית ציבורית בלבד ואינו מהווה ייעוץ משפטי.<br>
+  © 2026 כל הזכויות שמורות לאור שרון אוטומציות עסקיות
+</footer>
+
+<!-- MODALS -->
+<div class="mo" id="mo-privacy">
+  <div class="mb">
+    <div class="mh"><div class="mh-l"><h2>🛡️ מדיניות פרטיות</h2><p>תיקון 13 לחוק הגנת הפרטיות — 2026</p></div><button class="mc-x" onclick="closeMo('privacy')">✕</button></div>
+    <div class="mbody">
+      <div class="rpill">⚠️ סיכון קריטי</div>
+      <div class="ms"><h4>הבעיה שנמצאה</h4><p>אין הצהרה חוקית על איסוף ומטרות המידע האישי של לקוחות העסק. תיקון 13 (2026) מחייב פרסום מדיניות פרטיות מפורטת הכוללת סוג המידע, מטרותיו, גורמים שלישיים ותקופת שמירה.</p></div>
+      <div class="ms"><h4>החשיפה המשפטית</h4><div class="ibox"><strong>קנס מנהלי עד ₪500,000</strong> + תביעות אזרחיות ללא הוכחת נזק — עד ₪10,000 לאדם.</div></div>
+      <div class="lockbox"><span class="lock-ico">🔒</span><div class="lock-t">חסום — זמין לאחר הסדרת ההתקשרות</div><div class="lock-d">הנוסח המלא של מדיניות הפרטיות המותאמת לעסק שלכם יסופק ויועלה לאתר על ידי אור שרון לאחר חתימת ההסכם.</div></div>
+    </div>
+    <div class="mfoot"><button class="btn-mc" onclick="closeMo('privacy')">סגור</button><a href="https://wa.me/972537206261?text=%D7%A8%D7%95%D7%A6%D7%94%20%D7%9C%D7%98%D7%A4%D7%9C%20%D7%91%D7%9E%D7%93%D7%99%D7%A0%D7%99%D7%95%D7%AA%20%D7%A4%D7%A8%D7%98%D7%99%D7%95%D7%AA" target="_blank" class="btn-mwa">💬 לטיפול בליקוי זה</a></div>
+  </div>
+</div>
+
+<div class="mo" id="mo-terms">
+  <div class="mb">
+    <div class="mh"><div class="mh-l"><h2>📄 תנאי שימוש</h2><p>הגבלת אחריות מקצועית ומסחרית</p></div><button class="mc-x" onclick="closeMo('terms')">✕</button></div>
+    <div class="mbody">
+      <div class="rpill">⚠️ סיכון קריטי</div>
+      <div class="ms"><h4>הבעיה שנמצאה</h4><p>אין חוזה משפטי המגביל את אחריות העסק על טעויות, הסתמכות על מידע מקצועי שפורסם באתר, או תקלות טכניות. כל תוכן ללא תנאי שימוש עלול להיחשב ייעוץ מחייב.</p></div>
+      <div class="ms"><h4>החשיפה המשפטית</h4><div class="ibox"><strong>תביעות אזרחיות</strong> על מצגים מוטעים והסתמכות — ללא תנאי שימוש אין כל הגנה משפטית.</div></div>
+      <div class="lockbox"><span class="lock-ico">🔒</span><div class="lock-t">חסום — זמין לאחר הסדרת ההתקשרות</div><div class="lock-d">תנאי השימוש המלאים כולל סעיפי הגבלת אחריות יסופקו ויועלו לאתר.</div></div>
+    </div>
+    <div class="mfoot"><button class="btn-mc" onclick="closeMo('terms')">סגור</button><a href="https://wa.me/972537206261?text=%D7%A8%D7%95%D7%A6%D7%94%20%D7%9C%D7%98%D7%A4%D7%9C%20%D7%91%D7%AA%D7%A0%D7%90%D7%99%20%D7%A9%D7%99%D7%9E%D7%95%D7%A9" target="_blank" class="btn-mwa">💬 לטיפול בליקוי זה</a></div>
+  </div>
+</div>
+
+<div class="mo" id="mo-cookies">
+  <div class="mb">
+    <div class="mh"><div class="mh-l"><h2>🍪 באנר קוקיז</h2><p>Opt-in חובה לפני כל מעקב</p></div><button class="mc-x" onclick="closeMo('cookies')">✕</button></div>
+    <div class="mbody">
+      <div class="rpill">⚠️ סיכון קריטי</div>
+      <div class="ms"><h4>הבעיה שנמצאה</h4><p>האתר מפעיל פיקסלים שיווקיים (Google Analytics / Meta Pixel) אוטומטית ללא קבלת הסכמה מראש. זוהי הפרה ישירה של תיקון 13 והנחיות הרשות להגנת הפרטיות.</p></div>
+      <div class="ms"><h4>החשיפה המשפטית</h4><div class="ibox"><strong>איסוף מידע ללא הסכמה</strong> — כל גולש שנחשף הוא עילת תביעה פוטנציאלית.</div></div>
+      <div class="lockbox"><span class="lock-ico">🔒</span><div class="lock-t">חסום — קוד ההזרקה שמור במערכת הפנימית</div><div class="lock-d">קוד באנר הקוקיז המלא כולל חסימת סקריפטים עד הסכמה יוזרק לאתר על ידי אור שרון.</div></div>
+    </div>
+    <div class="mfoot"><button class="btn-mc" onclick="closeMo('cookies')">סגור</button><a href="https://wa.me/972537206261?text=%D7%A8%D7%95%D7%A6%D7%94%20%D7%9C%D7%98%D7%A4%D7%9C%20%D7%91%D7%91%D7%90%D7%A0%D7%A8%20%D7%A7%D7%95%D7%A7%D7%99%D7%96" target="_blank" class="btn-mwa">💬 לטיפול בליקוי זה</a></div>
+  </div>
+</div>
+
+<div class="mo" id="mo-forms">
+  <div class="mb">
+    <div class="mh"><div class="mh-l"><h2>🔐 נעילת טפסים</h2><p>אישור חובה לפני שליחת פרטים</p></div><button class="mc-x" onclick="closeMo('forms')">✕</button></div>
+    <div class="mbody">
+      <div class="rpill">⚠️ סיכון קריטי</div>
+      <div class="ms"><h4>הבעיה שנמצאה</h4><p>טופס יצירת הקשר מאפשר שליחת פרטים אישיים ללא תיבת הסכמה חובה לתנאי השימוש ומדיניות הפרטיות. כל ליד שנקלט כך הוא סיכון משפטי.</p></div>
+      <div class="ms"><h4>החשיפה המשפטית</h4><div class="ibox"><strong>סעיף 11ב לתיקון 13</strong> — איסוף מידע ללא הסכמה מדעת ומתועדת הוא עילת תביעה ישירה.</div></div>
+      <div class="lockbox"><span class="lock-ico">🔒</span><div class="lock-t">חסום — קוד ההזרקה שמור במערכת הפנימית</div><div class="lock-d">קוד נעילת הטפסים הכולל תיבת הסכמה חובה יוזרק לאתר על ידי אור שרון.</div></div>
+    </div>
+    <div class="mfoot"><button class="btn-mc" onclick="closeMo('forms')">סגור</button><a href="https://wa.me/972537206261?text=%D7%A8%D7%95%D7%A6%D7%94%20%D7%9C%D7%98%D7%A4%D7%9C%20%D7%91%D7%A0%D7%A2%D7%99%D7%9C%D7%AA%20%D7%98%D7%A4%D7%A1%D7%99%D7%9D" target="_blank" class="btn-mwa">💬 לטיפול בליקוי זה</a></div>
+  </div>
+</div>
+
+<div class="mo" id="mo-accessibility">
+  <div class="mb">
+    <div class="mh"><div class="mh-l"><h2>♿ נגישות — תקן AA</h2><p>הפרות מבניות קריטיות בקוד האתר</p></div><button class="mc-x" onclick="closeMo('accessibility')">✕</button></div>
+    <div class="mbody">
+      <div class="rpill">⚠️ סיכון קריטי</div>
+      <div class="ms"><h4>הבעיה שנמצאה</h4><p>העדר סרגל נגישות, העדר הצהרת נגישות מעודכנת, והפרות מבניות בקוד האתר — כולן דרישות חובה לפי חוק שוויון זכויות לאנשים עם מוגבלות.</p></div>
+      <div class="ms"><h4>החשיפה המשפטית</h4><div class="ibox"><strong>תביעות ייצוגיות</strong> בגין חוסר נגישות — עלות פשרה ממוצעת בישראל: ₪80,000–₪250,000.</div></div>
+      <div class="lockbox"><span class="lock-ico">🔒</span><div class="lock-t">חסום — רכיב הנגישות שמור במערכת הפנימית</div><div class="lock-d">סרגל הנגישות, הצהרת הנגישות ותיקוני הקוד יוטמעו באתר על ידי אור שרון.</div></div>
+    </div>
+    <div class="mfoot"><button class="btn-mc" onclick="closeMo('accessibility')">סגור</button><a href="https://wa.me/972537206261?text=%D7%A8%D7%95%D7%A6%D7%94%20%D7%9C%D7%98%D7%A4%D7%9C%20%D7%91%D7%A0%D7%92%D7%99%D7%A9%D7%95%D7%AA" target="_blank" class="btn-mwa">💬 לטיפול בליקוי זה</a></div>
+  </div>
+</div>
+
+<script>
+var ITEMS = {
+  privacy:      {ico:'🛡️', title:'מדיניות פרטיות',  sub:'תיקון 13 — 2026'},
+  terms:        {ico:'📄', title:'תנאי שימוש',       sub:'הגבלת אחריות מקצועית'},
+  cookies:      {ico:'🍪', title:'באנר קוקיז',       sub:'Opt-in לפני מעקב'},
+  forms:        {ico:'🔐', title:'נעילת טפסים',      sub:'אישור חובה לפני שליחה'},
+  accessibility:{ico:'♿', title:'נגישות — תקן AA',  sub:'סרגל + הצהרת נגישות'}
+};
+
+function init() {
+  var p    = new URLSearchParams(window.location.search);
+  var name = p.get('name') ? decodeURIComponent(p.get('name')) : 'הלקוח שלי';
+  var url  = p.get('url')  ? decodeURIComponent(p.get('url'))  : '';
+
+  // Try to read from 'data' param (JSON from Claude) or individual params
+  var status = { privacy: false, terms: false, cookies: false, forms: false, accessibility: false };
+  var dataParam = p.get('data');
+  if (dataParam) {
+    try {
+      var clean = decodeURIComponent(dataParam).replace(/```json/g,'').replace(/```/g,'').trim();
+      var parsed = JSON.parse(clean);
+      status.privacy       = !!parsed.privacy;
+      status.terms         = !!parsed.terms;
+      status.cookies       = !!parsed.cookies;
+      status.forms         = !!parsed.forms;
+      status.accessibility = !!parsed.accessibility;
+    } catch(e) {
+      // fallback to individual params
+      status.privacy       = p.get('privacy')       === 'true';
+      status.terms         = p.get('terms')         === 'true';
+      status.cookies       = p.get('cookies')       === 'true';
+      status.forms         = p.get('forms')         === 'true';
+      status.accessibility = p.get('accessibility') === 'true';
+    }
+  } else {
+    status.privacy       = p.get('privacy')       === 'true';
+    status.terms         = p.get('terms')         === 'true';
+    status.cookies       = p.get('cookies')       === 'true';
+    status.forms         = p.get('forms')         === 'true';
+    status.accessibility = p.get('accessibility') === 'true';
+  }
+
+  document.getElementById('clientName').textContent = name;
+  if (url) document.getElementById('clientUrl').textContent = url;
+
+  var okCount   = Object.values(status).filter(Boolean).length;
+  var critCount = 5 - okCount;
+  var score     = Math.round((okCount / 5) * 100);
+
+  var circ   = 2 * Math.PI * 54;
+  var offset = circ - (score / 100) * circ;
+  var ring   = document.getElementById('ringEl');
+  ring.style.strokeDasharray = circ;
+  setTimeout(function(){ ring.style.strokeDashoffset = offset; }, 250);
+
+  if (score >= 80) {
+    ring.style.stroke = '#00e676';
+    ring.style.filter = 'drop-shadow(0 0 10px rgba(0,230,118,0.6))';
+    document.getElementById('riskLabel').textContent = 'רמת סיכון נמוכה — מצב טוב!';
+    document.getElementById('scoreEl').style.color = '#00e676';
+  } else if (score >= 50) {
+    ring.style.stroke = '#ffb700';
+    ring.style.filter = 'drop-shadow(0 0 10px rgba(255,183,0,0.6))';
+    document.getElementById('riskLabel').textContent = 'רמת סיכון בינונית — יש לטפל';
+    document.getElementById('scoreEl').style.color = '#ffb700';
+  }
+
+  document.getElementById('scoreEl').innerHTML = score + '%<small>ציות</small>';
+  document.getElementById('critN').textContent  = critCount;
+  document.getElementById('okN').textContent    = okCount;
+
+  var grid = document.getElementById('issuesGrid');
+  var keys = Object.keys(status);
+  keys.forEach(function(key, i) {
+    var ok   = status[key];
+    var item = ITEMS[key];
+    var isLast = (i === keys.length - 1);
+    var div  = document.createElement('div');
+    div.className = 'issue ' + (ok ? 'present' : 'missing') + (isLast ? ' issue-full' : '');
+    if (!ok) div.onclick = function(){ openMo(key); };
+    div.innerHTML =
+      '<div class="il">' +
+        '<div class="iico">' + item.ico + '</div>' +
+        '<div>' +
+          '<div class="ititle">' + item.title + '</div>' +
+          '<div class="isub">' + item.sub + '</div>' +
+        '</div>' +
+      '</div>' +
+      '<span class="tag ' + (ok ? 'tag-ok' : 'tag-miss') + '">' + (ok ? 'קיים ✅' : 'חסר ❌') + '</span>';
+    grid.appendChild(div);
+  });
+
+  var waMsg = encodeURIComponent('שלום אור, ראיתי את דוח הציות של ' + name + ' ואני רוצה לטפל בליקויים ולקבל הצעה');
+  var waUrl = 'https://wa.me/972537206261?text=' + waMsg;
+  document.getElementById('waMain').href   = waUrl;
+  document.getElementById('waHeader').href = waUrl;
+}
+
+function openMo(id) {
+  document.getElementById('mo-' + id).classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeMo(id) {
+  document.getElementById('mo-' + id).classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+document.querySelectorAll('.mo').forEach(function(o) {
+  o.addEventListener('click', function(e) {
+    if (e.target === this) { this.classList.remove('open'); document.body.style.overflow = ''; }
+  });
+});
+
+document.addEventListener('keydown', function(e) {
+  if (e.key === 'Escape') {
+    document.querySelectorAll('.mo.open').forEach(function(m) {
+      m.classList.remove('open'); document.body.style.overflow = '';
+    });
+  }
+});
+
+init();
+</script>
+</body>
+</html>
