@@ -192,8 +192,8 @@ footer strong{color:#7799bb;}
         <div class="ring-num" id="scoreEl">0%<small>ציות</small></div>
       </div>
     </div>
-    <div class="risk-badge">⚠️ <span id="riskLabel">רמת סיכון קריטית — תיקון 13 (2026)</span></div>
-    <p class="risk-desc">האתר שלכם חשוף לקנסות מנהליים ותביעות אזרחיות לפי <strong>תיקון 13 לחוק הגנת הפרטיות</strong> ו<strong>חוק הנגישות הדיגיטלי</strong>. כל יום ללא טיפול מגדיל את החשיפה המשפטית.</p>
+    <div class="risk-badge" id="riskBadge">⚠️ <span id="riskLabel">רמת סיכון קריטית — תיקון 13 (2026)</span></div>
+    <p class="risk-desc" id="riskDesc">האתר שלכם חשוף לקנסות מנהליים ותביעות אזרחיות לפי <strong>תיקון 13 לחוק הגנת הפרטיות</strong> ו<strong>חוק הנגישות הדיגיטלי</strong>. כל יום ללא טיפול מגדיל את החשיפה המשפטית.</p>
   </div>
 
   <div class="stats">
@@ -205,7 +205,7 @@ footer strong{color:#7799bb;}
   <div class="sec-label">לחץ על ליקוי לפירוט והפתרון</div>
   <div class="issues" id="issuesGrid"></div>
 
-  <div class="pkg">
+  <div class="pkg" id="pkgBlock">
     <div class="pkg-top">
       <div>
         <div class="pkg-title">חבילת <span>הגנה מלאה DFY</span></div>
@@ -233,7 +233,7 @@ footer strong{color:#7799bb;}
     </div>
   </div>
 
-  <div class="cta">
+  <div class="cta" id="ctaBlock">
     <a id="waMain" href="https://wa.me/972537206261" target="_blank" class="cta-main">
       <span class="wa-ico">💬</span> אני רוצה לטפל בזה עכשיו
     </a>
@@ -371,7 +371,25 @@ function init() {
   ring.style.strokeDasharray = circ;
   setTimeout(function(){ ring.style.strokeDashoffset = offset; }, 250);
 
-  if (score >= 80) {
+  if (score === 100) {
+    // Full success state
+    ring.style.stroke = '#00e676';
+    ring.style.filter = 'drop-shadow(0 0 10px rgba(0,230,118,0.6))';
+    document.getElementById('scoreEl').style.color = '#00e676';
+    document.getElementById('riskLabel').textContent = 'האתר שלכם מוגן ותואם לחוק ✅';
+    document.getElementById('riskBadge').innerHTML = '✅ <span id="riskLabel">האתר שלכם מוגן ותואם לחוק</span>';
+    document.getElementById('riskBadge').style.color = '#00e676';
+    document.getElementById('riskDesc').innerHTML = 'כל הדרישות החוקיות מולאו בהצלחה. האתר שלכם עומד בדרישות <strong>תיקון 13 לחוק הגנת הפרטיות</strong> ו<strong>חוק הנגישות הדיגיטלי</strong>. כל הכבוד!';
+    // Hide package and CTA
+    document.getElementById('pkgBlock').style.display = 'none';
+    document.getElementById('ctaBlock').innerHTML =
+      '<div style="text-align:center;padding:1.5rem;background:rgba(0,230,118,0.06);border:1px solid rgba(0,230,118,0.2);border-radius:1.25rem;">' +
+      '<div style="font-size:2.5rem;margin-bottom:.75rem;">🎉</div>' +
+      '<div style="font-size:1.1rem;font-weight:900;color:#00e676;margin-bottom:.5rem;">האתר שלכם תקין ומוגן!</div>' +
+      '<div style="font-size:.85rem;color:var(--muted);margin-bottom:1rem;">כל 5 הסעיפים הוטמעו בהצלחה על ידי אור שרון אוטומציות עסקיות.</div>' +
+      '<div style="font-size:.78rem;color:var(--muted);">📞 <a href="tel:0537206261" style="color:var(--cyan);">053-720-6261</a> &nbsp;|&nbsp; ✉️ <a href="mailto:fcorsha420@gmail.com" style="color:var(--cyan);">fcorsha420@gmail.com</a></div>' +
+      '</div>';
+  } else if (score >= 80) {
     ring.style.stroke = '#00e676';
     ring.style.filter = 'drop-shadow(0 0 10px rgba(0,230,118,0.6))';
     document.getElementById('riskLabel').textContent = 'רמת סיכון נמוכה — מצב טוב!';
