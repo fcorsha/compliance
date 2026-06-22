@@ -1,462 +1,898 @@
 <!DOCTYPE html>
 <html lang="he" dir="rtl">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>דו"ח ציות דיגיטלי | אור שרון</title>
-<link href="https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;500;700;900&family=Orbitron:wght@700;900&display=swap" rel="stylesheet">
-<style>
-*{box-sizing:border-box;margin:0;padding:0}
-:root{
-  --cyan:#00e5ff;--cyan2:rgba(0,229,255,0.12);
-  --red:#ff4444;--red2:rgba(255,68,68,0.12);
-  --green:#00e676;--green2:rgba(0,230,118,0.1);
-  --amber:#ffb700;--bg:#020a18;--s1:#071428;
-  --border:rgba(0,229,255,0.1);--text:#e8f4fd;--muted:#4a7fa5;
-}
-html{scroll-behavior:smooth}
-body{font-family:'Heebo',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;direction:rtl;overflow-x:hidden;}
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>S-TEAM | גיוס מאבטחים — אירועים, ספורט, הופעות</title>
+  <meta name="description" content="הצטרפו לצוות S-TEAM. עבודה דינמית באבטחת אירועים, שכר 40–50 ש״ח לשעה, הכשרה על חשבוננו.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Assistant:wght@400;600;700;800&display=swap" rel="stylesheet">
 
-/* GRID */
-body::before{content:'';position:fixed;inset:0;z-index:0;
-  background-image:linear-gradient(rgba(0,229,255,0.025) 1px,transparent 1px),linear-gradient(90deg,rgba(0,229,255,0.025) 1px,transparent 1px);
-  background-size:56px 56px;pointer-events:none;}
+  <style>
+    /* ===== משתני מותג ===== */
+    :root {
+      --navy:      #1a2232;
+      --navy-mid:  #1e2a3a;
+      --gold-l:    #EDD068;
+      --gold:      #C9973E;
+      --gold-d:    #8B6420;
+      --white:     #ffffff;
+      --gray-bg:   #F5F5F5;
+      --gray-text: #555555;
+      --radius:    12px;
+      --shadow:    0 4px 24px rgba(0,0,0,0.10);
+    }
 
-/* ORBS */
-.orb{position:fixed;border-radius:50%;pointer-events:none;z-index:0;}
-.orb1{width:700px;height:700px;top:-200px;right:-200px;background:radial-gradient(circle,rgba(0,180,216,0.09) 0%,transparent 70%);}
-.orb2{width:500px;height:500px;bottom:-150px;left:-150px;background:radial-gradient(circle,rgba(255,59,59,0.07) 0%,transparent 70%);}
+    /* ===== ריסט בסיסי ===== */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: 'Assistant', sans-serif;
+      direction: rtl;
+      color: var(--navy);
+      background: var(--white);
+      overflow-x: hidden;
+    }
+    img { max-width: 100%; height: auto; display: block; }
+    a { color: inherit; text-decoration: none; }
+    ul { list-style: none; }
 
-/* HEADER */
-header{position:sticky;top:0;z-index:50;background:rgba(2,10,24,0.88);backdrop-filter:blur(24px);border-bottom:1px solid var(--border);padding:1rem 1.5rem;}
-.header-inner{max-width:64rem;margin:0 auto;display:flex;justify-content:space-between;align-items:center;gap:1rem;flex-wrap:wrap;}
-.logo{font-family:'Orbitron',monospace;font-size:.78rem;font-weight:700;letter-spacing:.12em;background:linear-gradient(90deg,var(--cyan),#60a5fa);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
-.wa-btn{display:inline-flex;align-items:center;gap:.5rem;background:linear-gradient(135deg,#25d366,#075e54);color:#fff;font-family:'Heebo',sans-serif;font-weight:700;font-size:.82rem;padding:.55rem 1.2rem;border-radius:.6rem;border:none;cursor:pointer;text-decoration:none;transition:all .2s;box-shadow:0 0 22px rgba(37,211,102,0.28);white-space:nowrap;}
-.wa-btn:hover{transform:translateY(-1px);box-shadow:0 0 35px rgba(37,211,102,0.45);}
+    /* ===== כלים כלליים ===== */
+    .container { max-width: 1100px; margin: 0 auto; padding: 0 1.25rem; }
+    .section    { padding: 4rem 0; }
+    .section-alt { background: var(--gray-bg); }
 
-/* MAIN */
-main{position:relative;z-index:1;max-width:62rem;margin:0 auto;padding:3rem 1.25rem 5rem;}
+    .section-title {
+      font-size: clamp(1.4rem, 4vw, 2rem);
+      font-weight: 800;
+      color: var(--navy);
+      margin-bottom: 0.5rem;
+      text-align: center;
+    }
+    .section-sub {
+      font-size: 1rem;
+      color: var(--gray-text);
+      text-align: center;
+      margin-bottom: 2.5rem;
+    }
 
-/* HERO */
-.hero{text-align:center;margin-bottom:2.5rem;animation:up .6s ease both;}
-@keyframes up{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:translateY(0)}}
-.scan-pill{display:inline-flex;align-items:center;gap:.5rem;background:rgba(0,229,255,0.06);border:1px solid rgba(0,229,255,0.18);color:var(--cyan);font-size:.68rem;font-weight:700;letter-spacing:.15em;padding:.3rem 1rem;border-radius:99px;text-transform:uppercase;margin-bottom:1rem;}
-.pulse{width:7px;height:7px;border-radius:50%;background:var(--cyan);animation:pulse 1.4s ease-in-out infinite;}
-@keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.3;transform:scale(.7)}}
-.hero h1{font-size:clamp(1.8rem,5vw,3rem);font-weight:900;line-height:1.15;margin-bottom:.6rem;}
-.grad{background:linear-gradient(135deg,var(--cyan),#60a5fa,#a78bfa);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
-.hero-sub{color:var(--muted);font-size:.95rem;margin-bottom:.3rem;}
-.hero-client{font-size:1.25rem;font-weight:900;color:var(--cyan);text-shadow:0 0 30px rgba(0,229,255,0.4);margin-bottom:.25rem;}
-.hero-url{font-size:.78rem;color:#2d6a8a;}
+    .btn-gold {
+      display: inline-block;
+      background: linear-gradient(135deg, var(--gold-l), var(--gold), var(--gold-d));
+      color: var(--navy);
+      font-family: 'Assistant', sans-serif;
+      font-weight: 800;
+      font-size: 1.1rem;
+      padding: 0.85rem 2rem;
+      border-radius: var(--radius);
+      border: none;
+      cursor: pointer;
+      transition: opacity 0.2s, transform 0.2s;
+      text-align: center;
+      width: 100%;
+    }
+    .btn-gold:hover { opacity: 0.9; transform: translateY(-2px); }
 
-/* RISK */
-.risk-card{background:linear-gradient(135deg,rgba(255,68,68,0.07),rgba(255,68,68,0.02));border:1px solid rgba(255,68,68,0.22);border-radius:1.75rem;padding:2.5rem 2rem;margin-bottom:2rem;text-align:center;box-shadow:0 0 60px rgba(255,68,68,0.06),inset 0 1px 0 rgba(255,255,255,0.04);animation:up .6s ease .1s both;}
-.ring-wrap{display:flex;justify-content:center;margin-bottom:1.25rem;}
-.ring-box{position:relative;width:130px;height:130px;}
-.ring-svg{transform:rotate(-90deg);}
-.ring-bg{fill:none;stroke:rgba(255,68,68,0.1);stroke-width:7;}
-.ring-fill{fill:none;stroke:var(--red);stroke-width:7;stroke-linecap:round;stroke-dasharray:376;stroke-dashoffset:376;filter:drop-shadow(0 0 10px rgba(255,68,68,0.6));transition:stroke-dashoffset 1.6s cubic-bezier(.4,0,.2,1);}
-.ring-num{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;font-family:'Orbitron',monospace;font-size:2rem;font-weight:900;color:var(--red);text-shadow:0 0 25px rgba(255,68,68,0.6);}
-.ring-num small{font-size:.48rem;font-weight:700;color:#ff8080;letter-spacing:.06em;margin-top:.1rem;}
-.risk-badge{display:inline-flex;align-items:center;gap:.5rem;color:#ff8080;font-size:1.05rem;font-weight:700;margin-bottom:.75rem;}
-.risk-desc{color:var(--muted);font-size:.88rem;line-height:1.8;max-width:36rem;margin:0 auto;}
-.risk-desc strong{color:#c8dff0;}
+    /* ===== HEADER ===== */
+    .site-header {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: var(--navy);
+      padding: 0.9rem 0;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.25);
+    }
+    .header-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .header-logo {
+      height: 44px;
+      width: auto;
+    }
+    .header-cta {
+      background: linear-gradient(135deg, var(--gold-l), var(--gold));
+      color: var(--navy);
+      font-weight: 800;
+      font-size: 0.9rem;
+      padding: 0.55rem 1.25rem;
+      border-radius: 8px;
+      transition: opacity 0.2s;
+      white-space: nowrap;
+    }
+    .header-cta:hover { opacity: 0.85; }
 
-/* STATS */
-.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem;margin-bottom:2rem;animation:up .6s ease .15s both;}
-@media(max-width:400px){.stats{grid-template-columns:1fr;}}
-.stat{background:rgba(7,20,40,0.9);border:1px solid var(--border);border-radius:1.1rem;padding:1.35rem;text-align:center;}
-.stat-n{font-size:2.2rem;font-weight:900;font-family:'Orbitron',monospace;line-height:1;}
-.stat-l{font-size:.68rem;color:var(--muted);margin-top:.3rem;font-weight:500;}
-.sr .stat-n{color:var(--red);text-shadow:0 0 20px rgba(255,68,68,0.4);}
-.sa .stat-n{color:var(--amber);text-shadow:0 0 20px rgba(255,183,0,0.3);}
-.sc .stat-n{color:var(--cyan);text-shadow:0 0 20px rgba(0,229,255,0.3);}
+    /* ===== HERO ===== */
+    .hero {
+      background: var(--navy);
+      padding: 3.5rem 0 4rem;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    /* קו זהב עדין בתחתית ה-hero */
+    .hero::after {
+      content: '';
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      height: 4px;
+      background: linear-gradient(90deg, transparent, var(--gold), transparent);
+    }
+    .hero-badge {
+      display: inline-block;
+      background: rgba(201, 151, 62, 0.15);
+      border: 1px solid var(--gold);
+      color: var(--gold-l);
+      font-size: 0.8rem;
+      font-weight: 600;
+      padding: 0.3rem 1rem;
+      border-radius: 99px;
+      margin-bottom: 1.5rem;
+      letter-spacing: 0.03em;
+    }
+    .hero h1 {
+      font-size: clamp(1.9rem, 6vw, 3rem);
+      font-weight: 800;
+      color: var(--white);
+      line-height: 1.2;
+      margin-bottom: 1rem;
+    }
+    .hero h1 span {
+      background: linear-gradient(135deg, var(--gold-l), var(--gold));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .hero-tagline {
+      font-size: clamp(0.95rem, 2.5vw, 1.15rem);
+      color: rgba(255,255,255,0.75);
+      line-height: 1.7;
+      max-width: 560px;
+      margin: 0 auto 2rem;
+    }
+    .hero-tagline strong { color: var(--gold-l); }
+    .hero-cta-wrap { max-width: 320px; margin: 0 auto; }
+    .hero-scroll-hint {
+      margin-top: 2.5rem;
+      color: rgba(255,255,255,0.3);
+      font-size: 0.78rem;
+      letter-spacing: 0.05em;
+    }
 
-/* ISSUES LABEL */
-.sec-label{font-size:.72rem;font-weight:700;color:var(--muted);letter-spacing:.1em;text-transform:uppercase;margin-bottom:1rem;padding:0 .25rem;display:flex;align-items:center;gap:.5rem;}
-.sec-label::before{content:'';flex:1;height:1px;background:linear-gradient(90deg,transparent,var(--border));}
-.sec-label::after{content:'';flex:1;height:1px;background:linear-gradient(270deg,transparent,var(--border));}
+    /* ===== מה אנחנו מציעים — כרטיסים ===== */
+    .benefits-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+    }
+    .benefit-card {
+      background: var(--white);
+      border: 1px solid #e5e7eb;
+      border-radius: var(--radius);
+      padding: 1.5rem 1.25rem;
+      text-align: center;
+      box-shadow: var(--shadow);
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .benefit-card:hover { transform: translateY(-4px); box-shadow: 0 8px 32px rgba(0,0,0,0.12); }
+    .benefit-icon {
+      font-size: 2rem;
+      margin-bottom: 0.75rem;
+      display: block;
+    }
+    .benefit-title {
+      font-weight: 800;
+      font-size: 1rem;
+      color: var(--navy);
+      margin-bottom: 0.4rem;
+    }
+    .benefit-desc {
+      font-size: 0.85rem;
+      color: var(--gray-text);
+      line-height: 1.6;
+    }
+    .benefit-highlight {
+      display: inline-block;
+      background: linear-gradient(135deg, var(--gold-l), var(--gold));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      font-weight: 800;
+      font-size: 1.15rem;
+    }
 
-/* ISSUES GRID */
-.issues{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:2.5rem;animation:up .6s ease .2s both;}
-@media(max-width:540px){.issues{grid-template-columns:1fr;}}
-.issue{background:rgba(7,20,40,0.85);border:1px solid rgba(255,255,255,0.06);border-radius:1.1rem;padding:1.2rem 1.35rem;cursor:pointer;display:flex;justify-content:space-between;align-items:center;gap:.875rem;transition:all .22s;position:relative;overflow:hidden;}
-.issue::before{content:'';position:absolute;inset:0;opacity:0;transition:opacity .22s;}
-.issue.missing::before{background:linear-gradient(135deg,rgba(255,68,68,0.05),transparent);}
-.issue.present::before{background:linear-gradient(135deg,rgba(0,230,118,0.04),transparent);}
-.issue.missing:hover{border-color:rgba(255,68,68,0.35);transform:translateY(-3px);box-shadow:0 14px 35px rgba(0,0,0,0.4),0 0 0 1px rgba(255,68,68,0.1);}
-.issue.missing:hover::before{opacity:1;}
-.issue.present{cursor:default;border-color:rgba(0,230,118,0.12);}
-.issue.present::before{opacity:1;}
-.il{display:flex;align-items:center;gap:.875rem;}
-.iico{font-size:1.5rem;flex-shrink:0;line-height:1;transition:transform .2s;}
-.issue.missing:hover .iico{transform:scale(1.15);}
-.ititle{font-weight:700;font-size:.9rem;color:var(--text);margin-bottom:.2rem;}
-.isub{font-size:.7rem;color:var(--muted);}
-.tag{font-size:.65rem;font-weight:700;padding:.25rem .6rem;border-radius:.35rem;white-space:nowrap;flex-shrink:0;letter-spacing:.03em;}
-.tag-miss{background:rgba(255,68,68,0.12);color:#ff8080;border:1px solid rgba(255,68,68,0.25);}
-.tag-ok{background:rgba(0,230,118,0.1);color:#00e676;border:1px solid rgba(0,230,118,0.22);}
-.issue-full{grid-column:span 2;}
-@media(max-width:540px){.issue-full{grid-column:span 1;}}
+    /* ===== מי אנחנו מחפשים ===== */
+    .requirements-wrap {
+      display: grid;
+      gap: 1.5rem;
+    }
+    .req-block {
+      background: var(--white);
+      border-radius: var(--radius);
+      padding: 1.5rem;
+      box-shadow: var(--shadow);
+    }
+    .req-block-title {
+      font-weight: 800;
+      font-size: 1.05rem;
+      margin-bottom: 1rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    .req-block-title.must  { color: var(--navy); }
+    .req-block-title.bonus { color: var(--gold-d); }
+    .req-list { display: flex; flex-direction: column; gap: 0.6rem; }
+    .req-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 0.6rem;
+      font-size: 0.95rem;
+      color: var(--gray-text);
+      line-height: 1.5;
+    }
+    .req-dot-must  { color: var(--navy); font-weight: 800; flex-shrink: 0; }
+    .req-dot-bonus { color: var(--gold); font-weight: 800; flex-shrink: 0; }
 
-/* PACKAGE */
-.pkg{background:linear-gradient(135deg,rgba(0,229,255,0.05),rgba(96,165,250,0.04));border:1px solid rgba(0,229,255,0.18);border-radius:1.75rem;padding:2rem;margin-bottom:2rem;box-shadow:0 0 60px rgba(0,229,255,0.05),inset 0 1px 0 rgba(255,255,255,0.04);animation:up .6s ease .25s both;}
-.pkg-top{display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:.875rem;margin-bottom:1.5rem;}
-.pkg-title{font-size:1.2rem;font-weight:900;}
-.pkg-title span{background:linear-gradient(135deg,var(--cyan),#60a5fa);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
-.pkg-sub{font-size:.77rem;color:var(--muted);margin-top:.3rem;}
-.pkg-badge{background:rgba(0,200,83,0.1);border:1px solid rgba(0,200,83,0.25);color:#00e676;font-size:.68rem;font-weight:700;padding:.3rem .75rem;border-radius:.4rem;white-space:nowrap;}
-.price-block{text-align:center;padding:1.5rem 0;border-top:1px solid var(--border);border-bottom:1px solid var(--border);margin-bottom:1.5rem;}
-.price-num{font-size:3.2rem;font-weight:900;font-family:'Orbitron',monospace;background:linear-gradient(135deg,var(--cyan),#60a5fa);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;line-height:1;}
-.price-note{font-size:.75rem;color:var(--muted);margin-top:.4rem;}
-.inc-title{font-size:.68rem;font-weight:700;color:var(--muted);letter-spacing:.12em;text-transform:uppercase;margin-bottom:.875rem;}
-.inc-grid{display:grid;grid-template-columns:1fr 1fr;gap:.6rem;}
-@media(max-width:480px){.inc-grid{grid-template-columns:1fr;}}
-.inc-item{display:flex;align-items:flex-start;gap:.55rem;font-size:.82rem;color:#b8d4e8;line-height:1.45;}
-.inc-item span.ck{color:var(--green);flex-shrink:0;font-size:.9rem;}
-.disclaimer{background:rgba(255,183,0,0.05);border:1px solid rgba(255,183,0,0.15);border-radius:.75rem;padding:.875rem 1rem;margin-top:1.25rem;font-size:.72rem;color:#fbbf24;line-height:1.65;}
+    .no-need-note {
+      margin-top: 1.25rem;
+      background: rgba(201,151,62,0.08);
+      border: 1px solid rgba(201,151,62,0.25);
+      border-radius: var(--radius);
+      padding: 0.9rem 1.1rem;
+      font-size: 0.88rem;
+      color: var(--gold-d);
+      font-weight: 600;
+      text-align: center;
+    }
 
-/* CTA */
-.cta{text-align:center;animation:up .6s ease .3s both;}
-.cta-main{display:inline-flex;align-items:center;gap:.875rem;background:linear-gradient(135deg,#25d366,#075e54);color:#fff;font-family:'Heebo',sans-serif;font-weight:900;font-size:1.05rem;padding:1rem 2.5rem;border-radius:1rem;border:none;cursor:pointer;text-decoration:none;transition:all .25s;margin-bottom:1rem;box-shadow:0 0 40px rgba(37,211,102,0.25);}
-.cta-main:hover{transform:translateY(-2px);box-shadow:0 0 60px rgba(37,211,102,0.45);}
-.wa-ico{font-size:1.4rem;}
-.contact-row{font-size:.8rem;color:var(--muted);display:flex;align-items:center;justify-content:center;gap:1rem;flex-wrap:wrap;}
-.contact-row a{color:var(--cyan);text-decoration:none;transition:color .15s;}
-.contact-row a:hover{color:#fff;}
+    /* ===== גלריית תחומי אבטחה ===== */
+    .gallery-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 1rem;
+    }
+    .gallery-card {
+      border-radius: var(--radius);
+      overflow: hidden;
+      position: relative;
+      height: 200px;
+      background: var(--navy-mid);
+      display: flex;
+      align-items: flex-end;
+      box-shadow: var(--shadow);
+    }
+    /* placeholder עד שמגיעות תמונות אמיתיות */
+    .gallery-card.gc-shows   { background: linear-gradient(135deg, #1a2232 0%, #2d1a4a 100%); }
+    .gallery-card.gc-sport   { background: linear-gradient(135deg, #1a2232 0%, #1a3a2d 100%); }
+    .gallery-card.gc-culture { background: linear-gradient(135deg, #1a2232 0%, #3a2d1a 100%); }
+    .gallery-card-inner {
+      width: 100%;
+      padding: 1.25rem;
+      background: linear-gradient(to top, rgba(26,34,50,0.95) 0%, transparent 100%);
+    }
+    .gallery-icon { font-size: 2.5rem; display: block; margin-bottom: 0.5rem; opacity: 0.9; }
+    .gallery-title {
+      font-size: 1.15rem;
+      font-weight: 800;
+      color: var(--white);
+      margin-bottom: 0.2rem;
+    }
+    .gallery-sub { font-size: 0.8rem; color: rgba(255,255,255,0.6); }
 
-/* FOOTER */
-footer{position:relative;z-index:1;border-top:1px solid rgba(255,255,255,0.04);padding:1.75rem;text-align:center;color:var(--muted);font-size:.7rem;line-height:1.9;}
-footer strong{color:#7799bb;}
+    /* ===== טופס מועמדות ===== */
+    .form-wrap {
+      background: var(--white);
+      border-radius: 16px;
+      padding: 2rem 1.5rem;
+      box-shadow: 0 8px 40px rgba(0,0,0,0.12);
+      max-width: 560px;
+      margin: 0 auto;
+    }
+    .form-title {
+      font-size: 1.35rem;
+      font-weight: 800;
+      color: var(--navy);
+      margin-bottom: 0.4rem;
+      text-align: center;
+    }
+    .form-sub {
+      font-size: 0.88rem;
+      color: var(--gray-text);
+      text-align: center;
+      margin-bottom: 1.75rem;
+    }
+    .form-group { margin-bottom: 1.1rem; }
+    .form-label {
+      display: block;
+      font-weight: 700;
+      font-size: 0.88rem;
+      color: var(--navy);
+      margin-bottom: 0.4rem;
+    }
+    .form-label .req-star { color: var(--gold); margin-right: 2px; }
+    .form-input, .form-select {
+      width: 100%;
+      padding: 0.7rem 0.9rem;
+      border: 1.5px solid #d1d5db;
+      border-radius: 8px;
+      font-family: 'Assistant', sans-serif;
+      font-size: 0.95rem;
+      color: var(--navy);
+      background: var(--white);
+      transition: border-color 0.2s;
+      direction: rtl;
+      appearance: none;
+    }
+    .form-input:focus, .form-select:focus {
+      outline: none;
+      border-color: var(--gold);
+      box-shadow: 0 0 0 3px rgba(201,151,62,0.15);
+    }
+    .form-input::placeholder { color: #9ca3af; }
+    .form-select { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%23555' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: left 0.75rem center; padding-left: 2rem; }
+    .form-checkbox-wrap {
+      display: flex;
+      align-items: flex-start;
+      gap: 0.6rem;
+      margin-bottom: 1.1rem;
+    }
+    .form-checkbox {
+      width: 18px;
+      height: 18px;
+      flex-shrink: 0;
+      margin-top: 2px;
+      accent-color: var(--gold);
+      cursor: pointer;
+    }
+    .form-checkbox-label {
+      font-size: 0.85rem;
+      color: var(--gray-text);
+      line-height: 1.5;
+    }
+    .form-consent-wrap {
+      border: 1.5px solid #e5e7eb;
+      border-radius: 8px;
+      padding: 0.75rem 1rem;
+      margin-bottom: 1.25rem;
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+    .form-submit {
+      width: 100%;
+      background: linear-gradient(135deg, var(--gold-l), var(--gold), var(--gold-d));
+      color: var(--navy);
+      font-family: 'Assistant', sans-serif;
+      font-weight: 800;
+      font-size: 1.1rem;
+      padding: 0.9rem;
+      border: none;
+      border-radius: var(--radius);
+      cursor: pointer;
+      transition: opacity 0.2s, transform 0.2s;
+    }
+    .form-submit:hover { opacity: 0.9; transform: translateY(-2px); }
+    .form-note {
+      text-align: center;
+      font-size: 0.78rem;
+      color: #9ca3af;
+      margin-top: 0.75rem;
+    }
 
-/* MODAL */
-.mo{display:none;position:fixed;inset:0;z-index:200;background:rgba(2,8,20,0.94);backdrop-filter:blur(16px);align-items:center;justify-content:center;padding:1.25rem;}
-.mo.open{display:flex;}
-.mb{background:var(--s1);border:1px solid rgba(0,229,255,0.12);border-radius:1.35rem;width:100%;max-width:34rem;max-height:90vh;overflow-y:auto;animation:mIn .24s ease;box-shadow:0 30px 80px rgba(0,0,0,0.6);}
-@keyframes mIn{from{opacity:0;transform:translateY(20px) scale(.96)}to{opacity:1;transform:none}}
-.mh{padding:1.375rem 1.5rem 1rem;border-bottom:1px solid rgba(255,255,255,0.05);display:flex;justify-content:space-between;align-items:flex-start;gap:.75rem;}
-.mh-l h2{font-size:1rem;font-weight:900;margin-bottom:.2rem;display:flex;align-items:center;gap:.5rem;}
-.mh-l p{font-size:.72rem;color:var(--muted);}
-.mc-x{background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.07);color:var(--muted);width:1.875rem;height:1.875rem;border-radius:.4rem;cursor:pointer;font-size:1.1rem;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:all .15s;line-height:1;}
-.mc-x:hover{background:rgba(255,68,68,0.15);border-color:rgba(255,68,68,0.3);color:var(--red);}
-.mbody{padding:1.375rem 1.5rem;}
-.rpill{display:inline-flex;align-items:center;gap:.4rem;background:rgba(255,68,68,0.09);color:#ff8080;border:1px solid rgba(255,68,68,0.22);font-size:.68rem;font-weight:700;padding:.25rem .65rem;border-radius:.35rem;margin-bottom:1rem;}
-.ms{margin-bottom:1.1rem;}
-.ms h4{font-size:.68rem;font-weight:700;color:var(--muted);letter-spacing:.1em;text-transform:uppercase;margin-bottom:.5rem;}
-.ms p{font-size:.84rem;color:#8fafc8;line-height:1.75;}
-.ibox{background:rgba(0,229,255,0.04);border:1px solid rgba(0,229,255,0.12);border-radius:.6rem;padding:.875rem 1rem;font-size:.8rem;color:#7dd3fc;line-height:1.65;}
-.ibox strong{color:var(--cyan);}
-.lockbox{background:linear-gradient(135deg,rgba(255,183,0,0.07),rgba(255,68,68,0.05));border:2px solid rgba(255,183,0,0.28);border-radius:1rem;padding:1.35rem 1.25rem;margin:.875rem 0;text-align:center;}
-.lock-ico{font-size:2rem;display:block;margin-bottom:.5rem;}
-.lock-t{font-size:.95rem;font-weight:900;color:#fbbf24;margin-bottom:.4rem;}
-.lock-d{font-size:.76rem;color:#7a9ab5;line-height:1.65;}
-.mfoot{padding:.875rem 1.5rem 1.375rem;border-top:1px solid rgba(255,255,255,0.04);display:flex;gap:.75rem;flex-wrap:wrap;}
-.btn-mc{flex:1;padding:.625rem;border-radius:.5rem;border:1px solid rgba(255,255,255,0.07);background:rgba(255,255,255,0.03);color:#5a7a94;font-family:'Heebo',sans-serif;font-size:.82rem;font-weight:700;cursor:pointer;transition:all .15s;}
-.btn-mc:hover{border-color:rgba(0,229,255,0.25);color:var(--cyan);}
-.btn-mwa{flex:2;padding:.625rem;border-radius:.5rem;background:linear-gradient(135deg,#25d366,#075e54);color:#fff;font-family:'Heebo',sans-serif;font-size:.84rem;font-weight:700;border:none;cursor:pointer;text-decoration:none;display:flex;align-items:center;justify-content:center;gap:.5rem;box-shadow:0 0 20px rgba(37,211,102,0.2);transition:all .15s;}
-.btn-mwa:hover{box-shadow:0 0 35px rgba(37,211,102,0.4);}
-::-webkit-scrollbar{width:4px;}
-::-webkit-scrollbar-track{background:transparent;}
-::-webkit-scrollbar-thumb{background:rgba(0,229,255,0.1);border-radius:2px;}
-</style>
+    /* ===== FAQ ===== */
+    .faq-list { display: flex; flex-direction: column; gap: 0.75rem; }
+    .faq-item {
+      background: var(--white);
+      border: 1.5px solid #e5e7eb;
+      border-radius: var(--radius);
+      overflow: hidden;
+    }
+    .faq-question {
+      width: 100%;
+      background: none;
+      border: none;
+      padding: 1.1rem 1.25rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 0.75rem;
+      font-family: 'Assistant', sans-serif;
+      font-size: 0.97rem;
+      font-weight: 700;
+      color: var(--navy);
+      cursor: pointer;
+      text-align: right;
+    }
+    .faq-arrow {
+      font-size: 0.75rem;
+      color: var(--gold);
+      flex-shrink: 0;
+      transition: transform 0.25s;
+    }
+    .faq-item.open .faq-arrow { transform: rotate(180deg); }
+    .faq-answer {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.3s ease;
+    }
+    .faq-item.open .faq-answer { max-height: 300px; }
+    .faq-answer-inner {
+      padding: 0 1.25rem 1.1rem;
+      font-size: 0.9rem;
+      color: var(--gray-text);
+      line-height: 1.75;
+      border-top: 1px solid #f0f0f0;
+      padding-top: 0.75rem;
+    }
+
+    /* ===== כפתור וואטסאפ צף ===== */
+    .wa-float {
+      position: fixed;
+      bottom: 1.5rem;
+      left: 1.5rem;
+      z-index: 200;
+      background: #25d366;
+      color: var(--white);
+      width: 58px;
+      height: 58px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.7rem;
+      box-shadow: 0 4px 20px rgba(37,211,102,0.45);
+      transition: transform 0.2s, box-shadow 0.2s;
+      text-decoration: none;
+    }
+    .wa-float:hover { transform: scale(1.1); box-shadow: 0 6px 28px rgba(37,211,102,0.6); }
+    .wa-float-label {
+      position: absolute;
+      right: calc(100% + 10px);
+      background: var(--navy);
+      color: var(--white);
+      font-size: 0.78rem;
+      font-weight: 700;
+      padding: 0.35rem 0.75rem;
+      border-radius: 6px;
+      white-space: nowrap;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.2s;
+    }
+    .wa-float:hover .wa-float-label { opacity: 1; }
+
+    /* ===== FOOTER ===== */
+    .site-footer {
+      background: var(--navy);
+      color: rgba(255,255,255,0.65);
+      padding: 2.5rem 0 1.5rem;
+      text-align: center;
+    }
+    .footer-logo { height: 40px; margin: 0 auto 1rem; }
+    .footer-name {
+      font-size: 1rem;
+      font-weight: 700;
+      color: var(--gold-l);
+      margin-bottom: 1rem;
+    }
+    .footer-links {
+      display: flex;
+      justify-content: center;
+      gap: 1.5rem;
+      flex-wrap: wrap;
+      font-size: 0.82rem;
+      margin-bottom: 1.25rem;
+    }
+    .footer-links a {
+      color: rgba(255,255,255,0.55);
+      transition: color 0.15s;
+    }
+    .footer-links a:hover { color: var(--gold-l); }
+    .footer-copy { font-size: 0.75rem; color: rgba(255,255,255,0.3); }
+
+    /* ===== רספונסיב — דסקטופ ===== */
+    @media (min-width: 640px) {
+      .btn-gold { width: auto; padding: 0.85rem 2.5rem; }
+      .benefits-grid { grid-template-columns: repeat(4, 1fr); gap: 1.25rem; }
+      .requirements-wrap { grid-template-columns: 1fr 1fr; }
+      .gallery-grid { grid-template-columns: repeat(3, 1fr); }
+      .gallery-card { height: 260px; }
+    }
+
+    @media (min-width: 768px) {
+      .hero { padding: 5rem 0 6rem; }
+      .hero-cta-wrap { max-width: 300px; }
+    }
+
+    /* ===== נגישות ===== */
+    :focus-visible {
+      outline: 3px solid var(--gold);
+      outline-offset: 3px;
+    }
+    @media (prefers-reduced-motion: reduce) {
+      * { transition: none !important; animation: none !important; scroll-behavior: auto !important; }
+    }
+  </style>
 </head>
 <body>
-<div class="orb orb1"></div>
-<div class="orb orb2"></div>
 
-<header>
-  <div class="header-inner">
-    <div class="logo">OR SHARON | BUSINESS AUTOMATIONS</div>
-    <a id="waHeader" href="https://wa.me/972537206261" target="_blank" class="wa-btn">
-      💬 דברו עם אור עכשיו
-    </a>
-  </div>
-</header>
+  <!-- ===== HEADER ===== -->
+  <header class="site-header" role="banner">
+    <div class="container header-inner">
+      <img src="assets/logo.svg" alt="S-TEAM לוגו" class="header-logo" width="120" height="44">
+      <a href="#form" class="header-cta">השאר פרטים ↓</a>
+    </div>
+  </header>
 
-<main>
-  <div class="hero">
-    <div class="scan-pill"><span class="pulse"></span> Compliance Scan · 2026</div>
-    <h1>דו"ח ציות <span class="grad">דיגיטלי</span> רשמי</h1>
-    <p class="hero-sub">נסרק עבור:</p>
-    <p class="hero-client" id="clientName">טוען...</p>
-    <p class="hero-url" id="clientUrl"></p>
-  </div>
-
-  <div class="risk-card">
-    <div class="ring-wrap">
-      <div class="ring-box">
-        <svg class="ring-svg" viewBox="0 0 120 120" width="130" height="130">
-          <circle class="ring-bg" cx="60" cy="60" r="54"/>
-          <circle class="ring-fill" id="ringEl" cx="60" cy="60" r="54"/>
-        </svg>
-        <div class="ring-num" id="scoreEl">0%<small>ציות</small></div>
+  <!-- ===== HERO ===== -->
+  <section class="hero" aria-label="כותרת ראשית">
+    <div class="container">
+      <span class="hero-badge">📍 חיפה · צפון · מרכז</span>
+      <h1>מצטרפים לצוות <span>S-TEAM</span></h1>
+      <p class="hero-tagline">
+        עבודה דינמית באבטחת אירועים<br>
+        <strong>שכר 40–50 ש"ח לשעה</strong> | הכשרה על חשבוננו
+      </p>
+      <div class="hero-cta-wrap">
+        <a href="#form" class="btn-gold">השאר פרטים עכשיו ←</a>
       </div>
+      <p class="hero-scroll-hint">↓ גלול לפרטים נוספים</p>
     </div>
-    <div class="risk-badge" id="riskBadge">⚠️ <span id="riskLabel">רמת סיכון קריטית — תיקון 13 (2026)</span></div>
-    <p class="risk-desc" id="riskDesc">האתר שלכם חשוף לקנסות מנהליים ותביעות אזרחיות לפי <strong>תיקון 13 לחוק הגנת הפרטיות</strong> ו<strong>חוק הנגישות הדיגיטלי</strong>. כל יום ללא טיפול מגדיל את החשיפה המשפטית.</p>
-  </div>
+  </section>
 
-  <div class="stats">
-    <div class="stat sr"><div class="stat-n" id="critN">0</div><div class="stat-l">ליקויים קריטיים</div></div>
-    <div class="stat sa"><div class="stat-n" id="okN">0</div><div class="stat-l">סעיפים תקינים</div></div>
-    <div class="stat sc"><div class="stat-n">5</div><div class="stat-l">סעיפים נבדקו</div></div>
-  </div>
+  <main id="main">
 
-  <div class="sec-label">לחץ על ליקוי לפירוט והפתרון</div>
-  <div class="issues" id="issuesGrid"></div>
+    <!-- ===== מה אנחנו מציעים ===== -->
+    <section class="section" id="benefits" aria-labelledby="benefits-title">
+      <div class="container">
+        <h2 class="section-title" id="benefits-title">מה אנחנו מציעים</h2>
+        <p class="section-sub">תנאים אמיתיים, חברה שמסודרת</p>
+        <div class="benefits-grid">
 
-  <div class="pkg" id="pkgBlock">
-    <div class="pkg-top">
-      <div>
-        <div class="pkg-title">חבילת <span>הגנה מלאה DFY</span></div>
-        <div class="pkg-sub">Done For You — אנחנו מטפלים בהכל תוך 3 ימי עסקים</div>
+          <div class="benefit-card">
+            <span class="benefit-icon" aria-hidden="true">💰</span>
+            <div class="benefit-title">שכר הוגן</div>
+            <div class="benefit-desc">
+              <span class="benefit-highlight">40–50 ש"ח לשעה</span><br>
+              תלוי בעבודה ובמיקום
+            </div>
+          </div>
+
+          <div class="benefit-card">
+            <span class="benefit-icon" aria-hidden="true">🎓</span>
+            <div class="benefit-title">הכשרה על חשבוננו</div>
+            <div class="benefit-desc">
+              הסמכה מלאה על חשבון החברה, תמורת התחייבות לשנה
+            </div>
+          </div>
+
+          <div class="benefit-card">
+            <span class="benefit-icon" aria-hidden="true">🎯</span>
+            <div class="benefit-title">עבודה גמישה</div>
+            <div class="benefit-desc">
+              אירועים, הופעות, ספורט — לא משרד, לא שגרה
+            </div>
+          </div>
+
+          <div class="benefit-card">
+            <span class="benefit-icon" aria-hidden="true">🏢</span>
+            <div class="benefit-title">חברה מסודרת</div>
+            <div class="benefit-desc">
+              הוקמה 2024, ~30 מאבטחים פעילים, צומחת במהירות
+            </div>
+          </div>
+
+        </div>
       </div>
-      <div class="pkg-badge">✅ תיקון 13 + תקן AA</div>
+    </section>
+
+    <!-- ===== מי אנחנו מחפשים ===== -->
+    <section class="section section-alt" id="requirements" aria-labelledby="req-title">
+      <div class="container">
+        <h2 class="section-title" id="req-title">מי אנחנו מחפשים?</h2>
+        <p class="section-sub">אם זה נשמע כמוך — בוא נדבר</p>
+
+        <div class="requirements-wrap">
+
+          <div class="req-block">
+            <div class="req-block-title must">
+              <span aria-hidden="true">✅</span> חובה
+            </div>
+            <ul class="req-list" aria-label="דרישות חובה">
+              <li class="req-item">
+                <span class="req-dot-must" aria-hidden="true">•</span>
+                גיל 21–60
+              </li>
+              <li class="req-item">
+                <span class="req-dot-must" aria-hidden="true">•</span>
+                עברית רהוטה
+              </li>
+              <li class="req-item">
+                <span class="req-dot-must" aria-hidden="true">•</span>
+                נכונות לעבור הכשרה ולהתחייב לשנה
+              </li>
+              <li class="req-item">
+                <span class="req-dot-must" aria-hidden="true">•</span>
+                נכונות לעבודה דינמית ולא קבועה במקום אחד
+              </li>
+            </ul>
+          </div>
+
+          <div class="req-block">
+            <div class="req-block-title bonus">
+              <span aria-hidden="true">⭐</span> יתרון — לא חובה
+            </div>
+            <ul class="req-list" aria-label="יתרונות">
+              <li class="req-item">
+                <span class="req-dot-bonus" aria-hidden="true">•</span>
+                רכב ורישיון נהיגה
+              </li>
+              <li class="req-item">
+                <span class="req-dot-bonus" aria-hidden="true">•</span>
+                ניסיון קודם באבטחה
+              </li>
+              <li class="req-item">
+                <span class="req-dot-bonus" aria-hidden="true">•</span>
+                הכשרות: בודק בטחוני / סדרן ספורט / מאבטח אירועי תרבות
+              </li>
+            </ul>
+          </div>
+
+        </div>
+
+        <div class="no-need-note" role="note">
+          🔫 רישיון נשק? לא נדרש כלל.
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ===== תחומי האבטחה שלנו ===== -->
+    <section class="section" id="domains" aria-labelledby="domains-title">
+      <div class="container">
+        <h2 class="section-title" id="domains-title">תחומי האבטחה שלנו</h2>
+        <p class="section-sub">איפה תמצאו אותנו</p>
+
+        <div class="gallery-grid">
+
+          <div class="gallery-card gc-shows" role="img" aria-label="אבטחת הופעות">
+            <div class="gallery-card-inner">
+              <span class="gallery-icon" aria-hidden="true">🎤</span>
+              <div class="gallery-title">הופעות</div>
+              <div class="gallery-sub">אמנים, קונצרטים, מועדונים</div>
+            </div>
+          </div>
+
+          <div class="gallery-card gc-sport" role="img" aria-label="אבטחת אירועי ספורט">
+            <div class="gallery-card-inner">
+              <span class="gallery-icon" aria-hidden="true">⚽</span>
+              <div class="gallery-title">אירועי ספורט</div>
+              <div class="gallery-sub">משחקים, טורנירים, ארנות</div>
+            </div>
+          </div>
+
+          <div class="gallery-card gc-culture" role="img" aria-label="אבטחת אירועי תרבות">
+            <div class="gallery-card-inner">
+              <span class="gallery-icon" aria-hidden="true">🎭</span>
+              <div class="gallery-title">אירועי תרבות</div>
+              <div class="gallery-sub">פסטיבלים, מופעים, ימי כיף</div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== טופס מועמדות ===== -->
+    <section class="section section-alt" id="form" aria-labelledby="form-title">
+      <div class="container">
+        <h2 class="section-title" id="form-title">השאר פרטים — נחזור אליך</h2>
+        <p class="section-sub">ממלאים, ואנחנו יוצרים קשר תוך 24 שעות</p>
+
+        <div class="form-wrap">
+          <p class="form-title">טופס הגשת מועמדות</p>
+          <p class="form-sub">כל השדות המסומנים ב-<span style="color:var(--gold)">★</span> הם חובה</p>
+
+          <!-- טופס סטטי — לא מחובר עדיין -->
+          <form id="candidate-form" novalidate>
+
+            <div class="form-group">
+              <label class="form-label" for="field-name">
+                שם מלא <span class="req-star">★</span>
+              </label>
+              <input class="form-input" type="text" id="field-name" name="name"
+                     placeholder="ישראל ישראלי" required autocomplete="name">
+            </div>
+
+            <div class="form-group">
+              <label class="form-label" for="field-phone">
+                טלפון <span class="req-star">★</span>
+              </label>
+              <input class="form-input" type="tel" id="field-phone" name="phone"
+                     placeholder="050-000-0000" required autocomplete="tel">
+            </div>
+
+            <div class="form-group">
+              <label class="form-label" for="field-age">
+                גיל <span class="req-star">★</span>
+              </label>
+              <input class="form-input" type="number" id="field-age" name="age"
+                     placeholder="28" min="21" max="60" required>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label" for="field-region">
+                אזור מגורים <span class="req-star">★</span>
+              </label>
+              <select class="form-select" id="field-region" name="region" required>
+                <option value="" disabled selected>בחר אזור...</option>
+                <option value="north">צפון (נהריה–חיפה)</option>
+                <option value="haifa">חיפה והסביבה</option>
+                <option value="center">מרכז (חיפה–ראשון לציון)</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label" for="field-experience">
+                ניסיון באבטחה
+              </label>
+              <select class="form-select" id="field-experience" name="experience">
+                <option value="none">אין ניסיון</option>
+                <option value="under1">עד שנה</option>
+                <option value="1to3">1–3 שנים</option>
+                <option value="over3">מעל 3 שנים</option>
+              </select>
+            </div>
+
+            <div class="form-checkbox-wrap">
+              <input class="form-checkbox" type="checkbox" id="field-weapon" name="weapon_license">
+              <label class="form-checkbox-label" for="field-weapon">
+                יש לי רישיון נשק (לא חובה)
+              </label>
+            </div>
+
+            <div class="form-consent-wrap">
+              <input class="form-checkbox" type="checkbox" id="field-consent" name="consent" required>
+              <label class="form-checkbox-label" for="field-consent">
+                אני מאשר/ת שיצרו איתי קשר לצורך הגשת מועמדות. קראתי את
+                <a href="privacy.html" style="color:var(--gold); text-decoration: underline;">מדיניות הפרטיות</a>.
+                <span style="color:var(--gold)">★</span>
+              </label>
+            </div>
+
+            <button type="submit" class="form-submit">שלח פרטים ←</button>
+            <p class="form-note">אחרי השליחה תועבר לשיחת וואטסאפ עם מיקי</p>
+
+          </form>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== שאלות נפוצות ===== -->
+    <section class="section" id="faq" aria-labelledby="faq-title">
+      <div class="container">
+        <h2 class="section-title" id="faq-title">שאלות נפוצות</h2>
+        <p class="section-sub">יש לך שאלה? כנראה שיש לה תשובה כאן</p>
+
+        <div class="faq-list" role="list">
+
+          <div class="faq-item" role="listitem">
+            <button class="faq-question" aria-expanded="false"
+                    aria-controls="faq1-answer" id="faq1-btn">
+              כמה זמן לוקחת ההכשרה?
+              <span class="faq-arrow" aria-hidden="true">▾</span>
+            </button>
+            <div class="faq-answer" id="faq1-answer" role="region" aria-labelledby="faq1-btn">
+              <div class="faq-answer-inner">
+                ההכשרה משתנה לפי סוג ההסמכה — בדרך כלל מדובר בכמה ימים עד שבוע.
+                החברה מממנת הכל ומתאמת את הלוגיסטיקה. לא תצטרך לדאוג לשום דבר.
+              </div>
+            </div>
+          </div>
+
+          <div class="faq-item" role="listitem">
+            <button class="faq-question" aria-expanded="false"
+                    aria-controls="faq2-answer" id="faq2-btn">
+              אפשר לעבוד במשרה חלקית?
+              <span class="faq-arrow" aria-hidden="true">▾</span>
+            </button>
+            <div class="faq-answer" id="faq2-answer" role="region" aria-labelledby="faq2-btn">
+              <div class="faq-answer-inner">
+                כן. העבודה היא לפי אירועים ומשמרות — ניתן להתאים את כמות המשמרות לפי הזמינות שלך.
+                יש גמישות, בתיאום עם הצוות.
+              </div>
+            </div>
+          </div>
+
+          <div class="faq-item" role="listitem">
+            <button class="faq-question" aria-expanded="false"
+                    aria-controls="faq3-answer" id="faq3-btn">
+              האם נדרש רישיון נשק?
+              <span class="faq-arrow" aria-hidden="true">▾</span>
+            </button>
+            <div class="faq-answer" id="faq3-answer" role="region" aria-labelledby="faq3-btn">
+              <div class="faq-answer-inner">
+                לא. S-TEAM מתמקדת באבטחת אירועים ותרבות — לא נדרש רישיון נשק.
+                זה יתרון, אבל ממש לא חובה.
+              </div>
+            </div>
+          </div>
+
+          <div class="faq-item" role="listitem">
+            <button class="faq-question" aria-expanded="false"
+                    aria-controls="faq4-answer" id="faq4-btn">
+              מתי מקבלים חזרה אחרי מילוי הטופס?
+              <span class="faq-arrow" aria-hidden="true">▾</span>
+            </button>
+            <div class="faq-answer" id="faq4-answer" role="region" aria-labelledby="faq4-btn">
+              <div class="faq-answer-inner">
+                מיקי חוזר תוך 24 שעות — לרוב מהר יותר. אם השארת פרטים, תקבל שיחה אישית.
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ===== FOOTER ===== -->
+  <footer class="site-footer" role="contentinfo">
+    <div class="container">
+      <img src="assets/logo.svg" alt="S-TEAM לוגו" class="footer-logo" width="80" height="30">
+      <div class="footer-name">S-TEAM | אבטחת אירועים</div>
+      <nav class="footer-links" aria-label="קישורי תחתית">
+        <a href="privacy.html">מדיניות פרטיות</a>
+        <a href="terms.html">תקנון</a>
+        <a href="accessibility.html">הצהרת נגישות</a>
+      </nav>
+      <p class="footer-copy">© 2026 S-TEAM כל הזכויות שמורות · ח.פ. 516773066</p>
     </div>
-    <div class="price-block">
-      <div class="price-num">₪1,299</div>
-      <div class="price-note">תשלום חד פעמי · ללא דמי מנוי · ללא הפתעות</div>
-    </div>
-    <div class="inc-title">מה כלול בחבילה:</div>
-    <div class="inc-grid">
-      <div class="inc-item"><span class="ck">✅</span><span>ניסוח מדיניות פרטיות מותאמת אישית</span></div>
-      <div class="inc-item"><span class="ck">✅</span><span>ניסוח תנאי שימוש + הגבלת אחריות</span></div>
-      <div class="inc-item"><span class="ck">✅</span><span>הזרקת קוד באנר קוקיז חוקי</span></div>
-      <div class="inc-item"><span class="ck">✅</span><span>נעילת טפסים — V חובה לפני שליחה</span></div>
-      <div class="inc-item"><span class="ck">✅</span><span>סרגל נגישות חוקי תקן AA</span></div>
-      <div class="inc-item"><span class="ck">✅</span><span>הצהרת נגישות + העלאה לאתר</span></div>
-      <div class="inc-item"><span class="ck">✅</span><span>העלאת עמודי תקנון לאתר</span></div>
-      <div class="inc-item"><span class="ck">✅</span><span>ביצוע מלא תוך 3 ימי עסקים</span></div>
-    </div>
-    <div class="disclaimer">
-      ⚠️ <strong>הבהרה חשובה:</strong> החבילה תקפה לאתר ולתוכן הקיים בלבד במועד ההתקשרות. שינויים עתידיים, תוספת עמודים או שינויי חקיקה יחייבו עדכון בתמחור נפרד. אור שרון אינה משרד עורכי דין ואינה נושאת אחריות משפטית ישירה.
-    </div>
-  </div>
+  </footer>
 
-  <div class="cta" id="ctaBlock">
-    <a id="waMain" href="https://wa.me/972537206261" target="_blank" class="cta-main">
-      <span class="wa-ico">💬</span> אני רוצה לטפל בזה עכשיו
-    </a>
-    <div class="contact-row">
-      <span>📞 <a href="tel:0537206261">053-720-6261</a></span>
-      <span>✉️ <a href="mailto:fcorsha420@gmail.com">fcorsha420@gmail.com</a></span>
-    </div>
-  </div>
-</main>
+  <!-- ===== כפתור וואטסאפ צף ===== -->
+  <a href="https://wa.me/972504999444?text=%D7%94%D7%99%D7%99%2C%20%D7%A8%D7%90%D7%99%D7%AA%D7%99%20%D7%90%D7%AA%20%D7%94%D7%9E%D7%95%D7%93%D7%A2%D7%94%20%D7%95%D7%90%D7%A0%D7%99%20%D7%9E%D7%A2%D7%95%D7%A0%D7%99%D7%99%D7%9F%20%D7%9C%D7%94%D7%92%D7%99%D7%A9%20%D7%9E%D7%95%D7%A2%D7%9E%D7%93%D7%95%D7%AA"
+     class="wa-float"
+     target="_blank"
+     rel="noopener noreferrer"
+     aria-label="פתח שיחת וואטסאפ עם מיקי">
+    <svg width="28" height="28" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+      <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
+    </svg>
+    <span class="wa-float-label">שוחח עם מיקי</span>
+  </a>
 
-<footer>
-  <strong>OR SHARON | BUSINESS AUTOMATIONS</strong><br>
-  דו"ח זה הופק אוטומטית על בסיס סריקה טכנולוגית ציבורית בלבד ואינו מהווה ייעוץ משפטי.<br>
-  © 2026 כל הזכויות שמורות לאור שרון אוטומציות עסקיות
-</footer>
+  <script>
+    /* ===== FAQ אקורדיון ===== */
+    document.querySelectorAll('.faq-question').forEach(function(btn) {
+      btn.addEventListener('click', function() {
+        var item = this.closest('.faq-item');
+        var isOpen = item.classList.contains('open');
 
-<!-- MODALS -->
-<div class="mo" id="mo-privacy">
-  <div class="mb">
-    <div class="mh"><div class="mh-l"><h2>🛡️ מדיניות פרטיות</h2><p>תיקון 13 לחוק הגנת הפרטיות — 2026</p></div><button class="mc-x" onclick="closeMo('privacy')">✕</button></div>
-    <div class="mbody">
-      <div class="rpill">⚠️ סיכון קריטי</div>
-      <div class="ms"><h4>הבעיה שנמצאה</h4><p>אין הצהרה חוקית על איסוף ומטרות המידע האישי של לקוחות העסק. תיקון 13 (2026) מחייב פרסום מדיניות פרטיות מפורטת הכוללת סוג המידע, מטרותיו, גורמים שלישיים ותקופת שמירה.</p></div>
-      <div class="ms"><h4>החשיפה המשפטית</h4><div class="ibox"><strong>קנס מנהלי עד ₪500,000</strong> + תביעות אזרחיות ללא הוכחת נזק — עד ₪10,000 לאדם.</div></div>
-      <div class="lockbox"><span class="lock-ico">🔒</span><div class="lock-t">חסום — זמין לאחר הסדרת ההתקשרות</div><div class="lock-d">הנוסח המלא של מדיניות הפרטיות המותאמת לעסק שלכם יסופק ויועלה לאתר על ידי אור שרון לאחר חתימת ההסכם.</div></div>
-    </div>
-    <div class="mfoot"><button class="btn-mc" onclick="closeMo('privacy')">סגור</button><a href="https://wa.me/972537206261?text=%D7%A8%D7%95%D7%A6%D7%94%20%D7%9C%D7%98%D7%A4%D7%9C%20%D7%91%D7%9E%D7%93%D7%99%D7%A0%D7%99%D7%95%D7%AA%20%D7%A4%D7%A8%D7%98%D7%99%D7%95%D7%AA" target="_blank" class="btn-mwa">💬 לטיפול בליקוי זה</a></div>
-  </div>
-</div>
+        /* סגור את כולם */
+        document.querySelectorAll('.faq-item.open').forEach(function(o) {
+          o.classList.remove('open');
+          o.querySelector('.faq-question').setAttribute('aria-expanded', 'false');
+        });
 
-<div class="mo" id="mo-terms">
-  <div class="mb">
-    <div class="mh"><div class="mh-l"><h2>📄 תנאי שימוש</h2><p>הגבלת אחריות מקצועית ומסחרית</p></div><button class="mc-x" onclick="closeMo('terms')">✕</button></div>
-    <div class="mbody">
-      <div class="rpill">⚠️ סיכון קריטי</div>
-      <div class="ms"><h4>הבעיה שנמצאה</h4><p>אין חוזה משפטי המגביל את אחריות העסק על טעויות, הסתמכות על מידע מקצועי שפורסם באתר, או תקלות טכניות. כל תוכן ללא תנאי שימוש עלול להיחשב ייעוץ מחייב.</p></div>
-      <div class="ms"><h4>החשיפה המשפטית</h4><div class="ibox"><strong>תביעות אזרחיות</strong> על מצגים מוטעים והסתמכות — ללא תנאי שימוש אין כל הגנה משפטית.</div></div>
-      <div class="lockbox"><span class="lock-ico">🔒</span><div class="lock-t">חסום — זמין לאחר הסדרת ההתקשרות</div><div class="lock-d">תנאי השימוש המלאים כולל סעיפי הגבלת אחריות יסופקו ויועלו לאתר.</div></div>
-    </div>
-    <div class="mfoot"><button class="btn-mc" onclick="closeMo('terms')">סגור</button><a href="https://wa.me/972537206261?text=%D7%A8%D7%95%D7%A6%D7%94%20%D7%9C%D7%98%D7%A4%D7%9C%20%D7%91%D7%AA%D7%A0%D7%90%D7%99%20%D7%A9%D7%99%D7%9E%D7%95%D7%A9" target="_blank" class="btn-mwa">💬 לטיפול בליקוי זה</a></div>
-  </div>
-</div>
-
-<div class="mo" id="mo-cookies">
-  <div class="mb">
-    <div class="mh"><div class="mh-l"><h2>🍪 באנר קוקיז</h2><p>Opt-in חובה לפני כל מעקב</p></div><button class="mc-x" onclick="closeMo('cookies')">✕</button></div>
-    <div class="mbody">
-      <div class="rpill">⚠️ סיכון קריטי</div>
-      <div class="ms"><h4>הבעיה שנמצאה</h4><p>האתר מפעיל פיקסלים שיווקיים (Google Analytics / Meta Pixel) אוטומטית ללא קבלת הסכמה מראש. זוהי הפרה ישירה של תיקון 13 והנחיות הרשות להגנת הפרטיות.</p></div>
-      <div class="ms"><h4>החשיפה המשפטית</h4><div class="ibox"><strong>איסוף מידע ללא הסכמה</strong> — כל גולש שנחשף הוא עילת תביעה פוטנציאלית.</div></div>
-      <div class="lockbox"><span class="lock-ico">🔒</span><div class="lock-t">חסום — קוד ההזרקה שמור במערכת הפנימית</div><div class="lock-d">קוד באנר הקוקיז המלא כולל חסימת סקריפטים עד הסכמה יוזרק לאתר על ידי אור שרון.</div></div>
-    </div>
-    <div class="mfoot"><button class="btn-mc" onclick="closeMo('cookies')">סגור</button><a href="https://wa.me/972537206261?text=%D7%A8%D7%95%D7%A6%D7%94%20%D7%9C%D7%98%D7%A4%D7%9C%20%D7%91%D7%91%D7%90%D7%A0%D7%A8%20%D7%A7%D7%95%D7%A7%D7%99%D7%96" target="_blank" class="btn-mwa">💬 לטיפול בליקוי זה</a></div>
-  </div>
-</div>
-
-<div class="mo" id="mo-forms">
-  <div class="mb">
-    <div class="mh"><div class="mh-l"><h2>🔐 נעילת טפסים</h2><p>אישור חובה לפני שליחת פרטים</p></div><button class="mc-x" onclick="closeMo('forms')">✕</button></div>
-    <div class="mbody">
-      <div class="rpill">⚠️ סיכון קריטי</div>
-      <div class="ms"><h4>הבעיה שנמצאה</h4><p>טופס יצירת הקשר מאפשר שליחת פרטים אישיים ללא תיבת הסכמה חובה לתנאי השימוש ומדיניות הפרטיות. כל ליד שנקלט כך הוא סיכון משפטי.</p></div>
-      <div class="ms"><h4>החשיפה המשפטית</h4><div class="ibox"><strong>סעיף 11ב לתיקון 13</strong> — איסוף מידע ללא הסכמה מדעת ומתועדת הוא עילת תביעה ישירה.</div></div>
-      <div class="lockbox"><span class="lock-ico">🔒</span><div class="lock-t">חסום — קוד ההזרקה שמור במערכת הפנימית</div><div class="lock-d">קוד נעילת הטפסים הכולל תיבת הסכמה חובה יוזרק לאתר על ידי אור שרון.</div></div>
-    </div>
-    <div class="mfoot"><button class="btn-mc" onclick="closeMo('forms')">סגור</button><a href="https://wa.me/972537206261?text=%D7%A8%D7%95%D7%A6%D7%94%20%D7%9C%D7%98%D7%A4%D7%9C%20%D7%91%D7%A0%D7%A2%D7%99%D7%9C%D7%AA%20%D7%98%D7%A4%D7%A1%D7%99%D7%9D" target="_blank" class="btn-mwa">💬 לטיפול בליקוי זה</a></div>
-  </div>
-</div>
-
-<div class="mo" id="mo-accessibility">
-  <div class="mb">
-    <div class="mh"><div class="mh-l"><h2>♿ נגישות — תקן AA</h2><p>הפרות מבניות קריטיות בקוד האתר</p></div><button class="mc-x" onclick="closeMo('accessibility')">✕</button></div>
-    <div class="mbody">
-      <div class="rpill">⚠️ סיכון קריטי</div>
-      <div class="ms"><h4>הבעיה שנמצאה</h4><p>העדר סרגל נגישות, העדר הצהרת נגישות מעודכנת, והפרות מבניות בקוד האתר — כולן דרישות חובה לפי חוק שוויון זכויות לאנשים עם מוגבלות.</p></div>
-      <div class="ms"><h4>החשיפה המשפטית</h4><div class="ibox"><strong>תביעות ייצוגיות</strong> בגין חוסר נגישות — עלות פשרה ממוצעת בישראל: ₪80,000–₪250,000.</div></div>
-      <div class="lockbox"><span class="lock-ico">🔒</span><div class="lock-t">חסום — רכיב הנגישות שמור במערכת הפנימית</div><div class="lock-d">סרגל הנגישות, הצהרת הנגישות ותיקוני הקוד יוטמעו באתר על ידי אור שרון.</div></div>
-    </div>
-    <div class="mfoot"><button class="btn-mc" onclick="closeMo('accessibility')">סגור</button><a href="https://wa.me/972537206261?text=%D7%A8%D7%95%D7%A6%D7%94%20%D7%9C%D7%98%D7%A4%D7%9C%20%D7%91%D7%A0%D7%92%D7%99%D7%A9%D7%95%D7%AA" target="_blank" class="btn-mwa">💬 לטיפול בליקוי זה</a></div>
-  </div>
-</div>
-
-<script>
-var ITEMS = {
-  privacy:      {ico:'🛡️', title:'מדיניות פרטיות',  sub:'תיקון 13 — 2026'},
-  terms:        {ico:'📄', title:'תנאי שימוש',       sub:'הגבלת אחריות מקצועית'},
-  cookies:      {ico:'🍪', title:'באנר קוקיז',       sub:'Opt-in לפני מעקב'},
-  forms:        {ico:'🔐', title:'נעילת טפסים',      sub:'אישור חובה לפני שליחה'},
-  accessibility:{ico:'♿', title:'נגישות — תקן AA',  sub:'סרגל + הצהרת נגישות'}
-};
-
-function init() {
-  var p    = new URLSearchParams(window.location.search);
-  var name = p.get('name') ? decodeURIComponent(p.get('name')) : 'הלקוח שלי';
-  var url  = p.get('url')  ? decodeURIComponent(p.get('url'))  : '';
-
-  // Try to read from 'data' param (JSON from Claude) or individual params
-  var status = { privacy: false, terms: false, cookies: false, forms: false, accessibility: false };
-  var dataParam = p.get('data');
-  if (dataParam) {
-    try {
-      var clean = decodeURIComponent(dataParam).replace(/```json/g,'').replace(/```/g,'').trim();
-      var parsed = JSON.parse(clean);
-      status.privacy       = !!parsed.privacy;
-      status.terms         = !!parsed.terms;
-      status.cookies       = !!parsed.cookies;
-      status.forms         = !!parsed.forms;
-      status.accessibility = !!parsed.accessibility;
-    } catch(e) {
-      // fallback to individual params
-      status.privacy       = p.get('privacy')       === 'true';
-      status.terms         = p.get('terms')         === 'true';
-      status.cookies       = p.get('cookies')       === 'true';
-      status.forms         = p.get('forms')         === 'true';
-      status.accessibility = p.get('accessibility') === 'true';
-    }
-  } else {
-    status.privacy       = p.get('privacy')       === 'true';
-    status.terms         = p.get('terms')         === 'true';
-    status.cookies       = p.get('cookies')       === 'true';
-    status.forms         = p.get('forms')         === 'true';
-    status.accessibility = p.get('accessibility') === 'true';
-  }
-
-  document.getElementById('clientName').textContent = name;
-  if (url) document.getElementById('clientUrl').textContent = url;
-
-  var okCount   = Object.values(status).filter(Boolean).length;
-  var critCount = 5 - okCount;
-  var score     = Math.round((okCount / 5) * 100);
-
-  var circ   = 2 * Math.PI * 54;
-  var offset = circ - (score / 100) * circ;
-  var ring   = document.getElementById('ringEl');
-  ring.style.strokeDasharray = circ;
-  setTimeout(function(){ ring.style.strokeDashoffset = offset; }, 250);
-
-  if (score === 100) {
-    // Full success state
-    ring.style.stroke = '#00e676';
-    ring.style.filter = 'drop-shadow(0 0 10px rgba(0,230,118,0.6))';
-    document.getElementById('scoreEl').style.color = '#00e676';
-    document.getElementById('riskLabel').textContent = 'האתר שלכם מוגן ותואם לחוק ✅';
-    document.getElementById('riskBadge').innerHTML = '✅ <span id="riskLabel">האתר שלכם מוגן ותואם לחוק</span>';
-    document.getElementById('riskBadge').style.color = '#00e676';
-    document.getElementById('riskDesc').innerHTML = 'כל הדרישות החוקיות מולאו בהצלחה. האתר שלכם עומד בדרישות <strong>תיקון 13 לחוק הגנת הפרטיות</strong> ו<strong>חוק הנגישות הדיגיטלי</strong>. כל הכבוד!';
-    // Hide package and CTA
-    document.getElementById('pkgBlock').style.display = 'none';
-    document.getElementById('ctaBlock').innerHTML =
-      '<div style="text-align:center;padding:1.5rem;background:rgba(0,230,118,0.06);border:1px solid rgba(0,230,118,0.2);border-radius:1.25rem;">' +
-      '<div style="font-size:2.5rem;margin-bottom:.75rem;">🎉</div>' +
-      '<div style="font-size:1.1rem;font-weight:900;color:#00e676;margin-bottom:.5rem;">האתר שלכם תקין ומוגן!</div>' +
-      '<div style="font-size:.85rem;color:var(--muted);margin-bottom:1rem;">כל 5 הסעיפים הוטמעו בהצלחה על ידי אור שרון אוטומציות עסקיות.</div>' +
-      '<div style="font-size:.78rem;color:var(--muted);">📞 <a href="tel:0537206261" style="color:var(--cyan);">053-720-6261</a> &nbsp;|&nbsp; ✉️ <a href="mailto:fcorsha420@gmail.com" style="color:var(--cyan);">fcorsha420@gmail.com</a></div>' +
-      '</div>';
-  } else if (score >= 80) {
-    ring.style.stroke = '#00e676';
-    ring.style.filter = 'drop-shadow(0 0 10px rgba(0,230,118,0.6))';
-    document.getElementById('riskLabel').textContent = 'רמת סיכון נמוכה — מצב טוב!';
-    document.getElementById('scoreEl').style.color = '#00e676';
-  } else if (score >= 50) {
-    ring.style.stroke = '#ffb700';
-    ring.style.filter = 'drop-shadow(0 0 10px rgba(255,183,0,0.6))';
-    document.getElementById('riskLabel').textContent = 'רמת סיכון בינונית — יש לטפל';
-    document.getElementById('scoreEl').style.color = '#ffb700';
-  }
-
-  document.getElementById('scoreEl').innerHTML = score + '%<small>ציות</small>';
-  document.getElementById('critN').textContent  = critCount;
-  document.getElementById('okN').textContent    = okCount;
-
-  var grid = document.getElementById('issuesGrid');
-  var keys = Object.keys(status);
-  keys.forEach(function(key, i) {
-    var ok   = status[key];
-    var item = ITEMS[key];
-    var isLast = (i === keys.length - 1);
-    var div  = document.createElement('div');
-    div.className = 'issue ' + (ok ? 'present' : 'missing') + (isLast ? ' issue-full' : '');
-    if (!ok) div.onclick = function(){ openMo(key); };
-    div.innerHTML =
-      '<div class="il">' +
-        '<div class="iico">' + item.ico + '</div>' +
-        '<div>' +
-          '<div class="ititle">' + item.title + '</div>' +
-          '<div class="isub">' + item.sub + '</div>' +
-        '</div>' +
-      '</div>' +
-      '<span class="tag ' + (ok ? 'tag-ok' : 'tag-miss') + '">' + (ok ? 'קיים ✅' : 'חסר ❌') + '</span>';
-    grid.appendChild(div);
-  });
-
-  var waMsg = encodeURIComponent('שלום אור, ראיתי את דוח הציות של ' + name + ' ואני רוצה לטפל בליקויים ולקבל הצעה');
-  var waUrl = 'https://wa.me/972537206261?text=' + waMsg;
-  document.getElementById('waMain').href   = waUrl;
-  document.getElementById('waHeader').href = waUrl;
-}
-
-function openMo(id) {
-  document.getElementById('mo-' + id).classList.add('open');
-  document.body.style.overflow = 'hidden';
-}
-
-function closeMo(id) {
-  document.getElementById('mo-' + id).classList.remove('open');
-  document.body.style.overflow = '';
-}
-
-document.querySelectorAll('.mo').forEach(function(o) {
-  o.addEventListener('click', function(e) {
-    if (e.target === this) { this.classList.remove('open'); document.body.style.overflow = ''; }
-  });
-});
-
-document.addEventListener('keydown', function(e) {
-  if (e.key === 'Escape') {
-    document.querySelectorAll('.mo.open').forEach(function(m) {
-      m.classList.remove('open'); document.body.style.overflow = '';
+        /* פתח את הנוכחי אם היה סגור */
+        if (!isOpen) {
+          item.classList.add('open');
+          this.setAttribute('aria-expanded', 'true');
+        }
+      });
     });
-  }
-});
 
-init();
-</script>
+    /* ===== טופס — placeholder (לא מחובר) ===== */
+    document.getElementById('candidate-form').addEventListener('submit', function(e) {
+      e.preventDefault();
+      /* TODO: לחבר ל-Make webhook בשלב הבא */
+      alert('טופס התקבל! בשלב הבא הטופס יישלח למיקי וואטסאפ.');
+    });
+  </script>
+
 </body>
 </html>
