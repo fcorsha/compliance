@@ -12,6 +12,14 @@
 
 if ( ! defined( 'ABSPATH' ) ) exit;
 
+if ( ! function_exists( 'bmb3_catalog_pmt' ) ) {
+	function bmb3_catalog_pmt( $P, $annual, $n ) {
+		$r = $annual / 100 / 12;
+		if ( abs( $r ) < 1e-9 ) return $P / $n;
+		return $P * $r / ( 1 - pow( 1 + $r, -$n ) );
+	}
+}
+
 if ( ! function_exists( 'bmb3_img_url' ) ) {
 	function bmb3_img_url( $val ) {
 		if ( empty( $val ) ) return '';
@@ -51,13 +59,21 @@ function bmb3_catalog_shortcode() {
 			$price_fmt    = ( $price !== '' && $price !== null ) ? number_format( (float) $price ) : '';
 			$deal_note = trim( (string) get_field( 'deal_note', $pid ) );
 
-			// חישוב תשלום חודשי משוער: 80% מימון, ריבית 5.5% שנתי, 60 חודשים
-			$monthly_payment = '';
+			// חישוב טווח החזר חודשי — אותם פרמטרים בדיוק כמו bmb3_finance
+			$monthly_low  = '';
+			$monthly_high = '';
 			if ( $price !== '' && $price !== null && (float) $price > 0 ) {
-				$loan = (float) $price * 0.80;
-				$r    = 0.055 / 12;
-				$n    = 60;
-				$monthly_payment = (int) round( $loan * $r * pow( 1 + $r, $n ) / ( pow( 1 + $r, $n ) - 1 ) );
+				$p   = (float) $price;
+				$yr  = (int) $year;
+				$rmin = 5.85;
+				if ( $yr >= 2023 )     { $rmax = 9;  $maxP = 100; }
+				elseif ( $yr >= 2022 ) { $rmax = 9;  $maxP = 84;  }
+				elseif ( $yr >= 2021 ) { $rmax = 10; $maxP = 84;  }
+				elseif ( $yr >= 2020 ) { $rmax = 10; $maxP = 72;  }
+				elseif ( $yr >= 2019 ) { $rmax = 11; $maxP = 72;  }
+				else                   { $rmax = 14; $maxP = 60;  }
+				$monthly_low  = (int) round( bmb3_catalog_pmt( $p, $rmin, $maxP ) );
+				$monthly_high = (int) round( bmb3_catalog_pmt( $p, $rmax, $maxP ) );
 			}
 
 			$name = trim( $manufacturer . ' ' . $model );
@@ -95,10 +111,11 @@ function bmb3_catalog_shortcode() {
 					<h3 class="bmb3-cc-name"><?php echo esc_html( $name ); ?></h3>
 					<?php if ( $meta_line ) : ?><div class="bmb3-cc-meta"><?php echo $meta_line; ?></div><?php endif; ?>
 					<?php if ( $price_fmt ) : ?><div class="bmb3-cc-price"><span class="t">מחירון</span><span class="n"><?php echo esc_html( $price_fmt ); ?> ₪</span></div><?php endif; ?>
-					<?php if ( $monthly_payment ) : ?>
-					<div class="bmb3-cc-monthly">
-						<span class="t">תשלום חודשי משוער</span>
-						<span class="n">~<?php echo number_format( $monthly_payment ); ?> ₪</span>
+					<?php if ( $monthly_low && $monthly_high ) : ?>
+					<div class="bmb3-cc-finance">
+						<div class="bmb3-cc-finance-cap">החזר חודשי משוער</div>
+						<div class="bmb3-cc-finance-main"><?php echo number_format( $monthly_low ) . ' ₪ - ' . number_format( $monthly_high ); ?> ₪</div>
+						<div class="bmb3-cc-finance-sub">עד - החל מ לחודש</div>
 					</div>
 					<?php endif; ?>
 					<span class="bmb3-cc-view">לצפייה ברכב <span aria-hidden="true">←</span></span>
@@ -273,13 +290,14 @@ function bmb3_catalog_shortcode() {
 	.bmb3-cc-body{padding:18px 18px 20px;}
 	.bmb3-cc-name{font-weight:800; font-size:19px; margin:0 0 6px; color:var(--ink);}
 	.bmb3-cc-meta{color:var(--muted2); font-weight:500; font-size:13.5px; letter-spacing:.02em; margin-bottom:14px;}
-	.bmb3-cc-price{display:flex; align-items:baseline; justify-content:space-between; gap:10px; padding:10px 0 0; margin-bottom:0; border-top:1px solid var(--line-card);}
+	.bmb3-cc-price{display:flex; align-items:baseline; justify-content:space-between; gap:10px; padding:10px 0 10px; border-top:1px solid var(--line-card);}
 	.bmb3-cc-price .t{color:var(--muted2); font-weight:500; font-size:12.5px; letter-spacing:.02em;}
 	.bmb3-cc-price .n{font-weight:800; font-size:19px; color:var(--ink);}
-	.bmb3-cc-monthly{display:flex; align-items:baseline; justify-content:space-between; gap:8px; padding:7px 0 12px; border-bottom:1px solid var(--line-card);}
-	.bmb3-cc-monthly .t{color:var(--muted2); font-weight:500; font-size:11.5px;}
-	.bmb3-cc-monthly .n{font-weight:800; font-size:14.5px; color:var(--green-d);}
-	.bmb3-cc-view{display:inline-flex; align-items:center; gap:6px; color:var(--green-d); font-weight:700; font-size:14px; transition:gap .25s; margin-top:14px;}
+	.bmb3-cc-finance{background:#0E0F13; border-radius:11px; padding:10px 13px 11px; margin-bottom:12px; text-align:center;}
+	.bmb3-cc-finance-cap{font-size:11px; color:#9AA3B0; margin-bottom:3px; font-weight:500;}
+	.bmb3-cc-finance-main{font-size:16px; font-weight:800; color:#86D766; direction:ltr; unicode-bidi:embed; line-height:1.25;}
+	.bmb3-cc-finance-sub{font-size:10.5px; color:#6f7787; margin-top:3px;}
+	.bmb3-cc-view{display:inline-flex; align-items:center; gap:6px; color:var(--green-d); font-weight:700; font-size:14px; transition:gap .25s;}
 	.bmb3-cc:hover .bmb3-cc-view{gap:11px;}
 	.bmb3-empty-state{text-align:center; color:var(--muted); font-weight:500; padding:50px 0; letter-spacing:.02em;}
 
