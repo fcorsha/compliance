@@ -290,14 +290,24 @@ function bmb3_catalog_shortcode() {
 	.bmb3-cc-body{padding:18px 18px 20px;}
 	.bmb3-cc-name{font-weight:800; font-size:19px; margin:0 0 6px; color:var(--ink);}
 	.bmb3-cc-meta{color:var(--muted2); font-weight:500; font-size:13.5px; letter-spacing:.02em; margin-bottom:14px;}
-	.bmb3-cc-price{display:flex; align-items:baseline; justify-content:space-between; gap:10px; padding:10px 0 10px; border-top:1px solid var(--line-card);}
-	.bmb3-cc-price .t{color:var(--muted2); font-weight:500; font-size:12.5px; letter-spacing:.02em;}
-	.bmb3-cc-price .n{font-weight:800; font-size:19px; color:var(--ink);}
-	.bmb3-cc-finance{background:#0E0F13; border-radius:11px; padding:10px 13px 11px; margin-bottom:12px; text-align:center;}
-	.bmb3-cc-finance-cap{font-size:11px; color:#9AA3B0; margin-bottom:3px; font-weight:500;}
-	.bmb3-cc-finance-main{font-size:16px; font-weight:800; color:#86D766; direction:ltr; unicode-bidi:embed; line-height:1.25;}
-	.bmb3-cc-finance-sub{font-size:10.5px; color:#6f7787; margin-top:3px;}
+	.bmb3-cc-price{display:flex; align-items:baseline; justify-content:space-between; gap:8px; padding:10px 0 8px; border-top:1px solid var(--line-card);}
+	.bmb3-cc-price .t{color:var(--muted2); font-weight:500; font-size:12px; letter-spacing:.02em;}
+	.bmb3-cc-price .n{font-weight:800; font-size:18px; color:var(--ink);}
+	.bmb3-cc-finance{background:#0E0F13; border-radius:11px; padding:10px 12px 11px; margin-bottom:12px; text-align:center;}
+	.bmb3-cc-finance-cap{font-size:10.5px; color:#9AA3B0; margin-bottom:3px; font-weight:500; letter-spacing:.01em;}
+	.bmb3-cc-finance-main{font-size:15px; font-weight:800; color:#86D766; direction:ltr; unicode-bidi:embed; line-height:1.3; white-space:nowrap;}
+	.bmb3-cc-finance-sub{font-size:10px; color:#6f7787; margin-top:2px; letter-spacing:.01em;}
 	.bmb3-cc-view{display:inline-flex; align-items:center; gap:6px; color:var(--green-d); font-weight:700; font-size:14px; transition:gap .25s;}
+	/* מובייל — כרטיסים קטנים (160px) */
+	@media (max-width:620px){
+		.bmb3-cc-price .n{font-size:15px;}
+		.bmb3-cc-price .t{font-size:11px;}
+		.bmb3-cc-finance{padding:8px 9px 9px;}
+		.bmb3-cc-finance-cap{font-size:9.5px;}
+		.bmb3-cc-finance-main{font-size:12.5px;}
+		.bmb3-cc-finance-sub{font-size:9px;}
+		.bmb3-cc-view{font-size:13px;}
+	}
 	.bmb3-cc:hover .bmb3-cc-view{gap:11px;}
 	.bmb3-empty-state{text-align:center; color:var(--muted); font-weight:500; padding:50px 0; letter-spacing:.02em;}
 
