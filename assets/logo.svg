@@ -1,0 +1,41 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 110" width="300" height="110" role="img" aria-label="S-team לוגו">
+  <title>S-team</title>
+  <defs>
+    <linearGradient id="goldShield" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%"   stop-color="#EDD068"/>
+      <stop offset="35%"  stop-color="#C9973E"/>
+      <stop offset="100%" stop-color="#8B6420"/>
+    </linearGradient>
+    <linearGradient id="goldText" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%"   stop-color="#EDD068"/>
+      <stop offset="50%"  stop-color="#C9973E"/>
+      <stop offset="100%" stop-color="#A07830"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Shield fill (dark navy) -->
+  <path d="M 8,6 L 92,6 L 92,62 C 92,90 50,103 50,103 C 50,103 8,90 8,62 Z"
+        fill="#1a2232"/>
+
+  <!-- Shield border (gold) -->
+  <path d="M 8,6 L 92,6 L 92,62 C 92,90 50,103 50,103 C 50,103 8,90 8,62 Z"
+        fill="none" stroke="url(#goldShield)" stroke-width="4" stroke-linejoin="round"/>
+
+  <!-- S letter inside shield -->
+  <text x="50" y="76"
+        font-family="Georgia, 'Times New Roman', serif"
+        font-size="62"
+        font-weight="bold"
+        font-style="italic"
+        fill="url(#goldShield)"
+        text-anchor="middle"
+        dominant-baseline="auto">S</text>
+
+  <!-- S-team text -->
+  <text x="112" y="68"
+        font-family="Georgia, 'Times New Roman', serif"
+        font-size="38"
+        fill="url(#goldText)"
+        text-anchor="start"
+        letter-spacing="1">S-team</text>
+</svg>
