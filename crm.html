@@ -1,0 +1,602 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CRM | בית סוכן · ניהול</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Frank+Ruhl+Libre:wght@400;500;700;900&family=Assistant:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#14161B;
+    --panel:#1B1E25;
+    --panel-2:#21242C;
+    --ivory:#F7F4EC;
+    --muted:#9A968A;
+    --gold:#B08D57;
+    --gold-bright:#D4AF6A;
+    --sage:#7C9473;
+    --rose:#B5524A;
+    --line:rgba(176,141,87,0.18);
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+
+  body{
+    background:var(--ink);
+    color:var(--ivory);
+    font-family:'Assistant',sans-serif;
+    min-height:100vh;
+  }
+
+  /* ── LAYOUT ── */
+  .app{display:grid;grid-template-columns:230px 1fr;min-height:100vh;}
+
+  /* ── SIDEBAR ── */
+  .sidebar{
+    background:var(--panel);
+    border-left:1px solid var(--line);
+    padding:28px 20px;
+    display:flex;flex-direction:column;gap:30px;
+    position:sticky;top:0;height:100vh;overflow-y:auto;
+  }
+  .brand{
+    font-family:'Frank Ruhl Libre',serif;font-weight:700;
+    font-size:18px;color:var(--gold-bright);letter-spacing:.02em;
+  }
+  .brand span{
+    display:block;font-size:11px;color:var(--muted);
+    font-family:'Assistant';font-weight:400;letter-spacing:.1em;margin-top:4px;
+  }
+  .nav{display:flex;flex-direction:column;gap:4px;}
+  .nav a{
+    color:var(--muted);text-decoration:none;font-size:14px;
+    padding:10px 12px;border-radius:8px;display:flex;align-items:center;gap:10px;
+    transition:all .15s;
+  }
+  .nav a:hover{background:rgba(176,141,87,.06);color:var(--ivory);}
+  .nav a.active{
+    background:var(--panel-2);color:var(--ivory);
+    border-right:2px solid var(--gold-bright);
+  }
+  .nav .ic{width:7px;height:7px;border-radius:50%;background:var(--gold);flex-shrink:0;}
+
+  /* ── MOBILE HEADER ── */
+  .mobile-header{
+    display:none;background:var(--panel);border-bottom:1px solid var(--line);
+    padding:14px 20px;align-items:center;justify-content:space-between;
+    position:sticky;top:0;z-index:100;
+  }
+  .hamburger{
+    background:none;border:1px solid var(--line);color:var(--ivory);
+    width:36px;height:36px;border-radius:8px;cursor:pointer;
+    font-size:18px;display:flex;align-items:center;justify-content:center;
+  }
+  .sidebar-overlay{
+    display:none;position:fixed;inset:0;
+    background:rgba(0,0,0,.55);z-index:199;
+  }
+  .sidebar-overlay.open{display:block;}
+
+  /* ── MAIN ── */
+  .main{padding:32px 36px;display:flex;flex-direction:column;gap:24px;overflow:hidden;}
+
+  .topline{
+    display:flex;justify-content:space-between;
+    align-items:flex-end;flex-wrap:wrap;gap:16px;
+  }
+  .eyebrow{
+    font-size:12px;letter-spacing:.18em;text-transform:uppercase;
+    color:var(--gold-bright);font-weight:600;margin-bottom:6px;
+  }
+  h1{font-family:'Frank Ruhl Libre',serif;font-size:26px;font-weight:700;}
+  .pill{
+    background:var(--panel-2);border:1px solid var(--line);
+    padding:8px 16px;border-radius:10px;font-size:13px;color:var(--muted);
+  }
+
+  /* ── KPIs ── */
+  .kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;}
+  .kpi{
+    background:var(--panel);border:1px solid var(--line);
+    border-radius:14px;padding:18px 20px;transition:border-color .2s;
+  }
+  .kpi:hover{border-color:rgba(176,141,87,.4);}
+  .kpi .num{
+    font-family:'Frank Ruhl Libre',serif;font-size:28px;
+    font-weight:700;color:var(--gold-bright);
+  }
+  .kpi .lbl{font-size:12.5px;color:var(--muted);margin-top:4px;}
+
+  /* ── TOOLBAR ── */
+  .toolbar{display:flex;align-items:center;gap:12px;flex-wrap:wrap;}
+  .filters{display:flex;gap:6px;flex-wrap:wrap;}
+  .filter-btn{
+    background:var(--panel);border:1px solid var(--line);color:var(--muted);
+    padding:7px 14px;border-radius:8px;font-size:13px;
+    font-family:'Assistant',sans-serif;cursor:pointer;transition:all .15s;
+  }
+  .filter-btn:hover{color:var(--ivory);border-color:rgba(176,141,87,.4);}
+  .filter-btn.active{
+    background:rgba(176,141,87,.12);border-color:var(--gold);color:var(--gold-bright);
+  }
+  .search{
+    margin-right:auto;background:var(--panel);border:1px solid var(--line);
+    border-radius:8px;padding:7px 14px;font-size:13px;color:var(--ivory);
+    font-family:'Assistant',sans-serif;width:200px;transition:border-color .15s;outline:none;
+  }
+  .search:focus{border-color:rgba(176,141,87,.5);}
+  .search::placeholder{color:var(--muted);}
+
+  /* ── GRID ── */
+  .grid2{display:grid;grid-template-columns:1.4fr 1fr;gap:22px;align-items:start;}
+
+  /* ── PANEL ── */
+  .panel{background:var(--panel);border:1px solid var(--line);border-radius:16px;overflow:hidden;}
+  .panel-head{
+    padding:16px 20px;border-bottom:1px solid var(--line);
+    display:flex;justify-content:space-between;align-items:center;gap:12px;
+  }
+  .panel-head h2{font-family:'Frank Ruhl Libre',serif;font-size:16px;font-weight:700;}
+  .panel-head .sub{font-size:12px;color:var(--muted);}
+
+  /* ── TABLE ── */
+  .table-wrap{overflow-x:auto;}
+  table{width:100%;border-collapse:collapse;}
+  th{
+    text-align:right;font-size:11.5px;color:var(--muted);
+    text-transform:uppercase;letter-spacing:.05em;
+    padding:11px 20px;border-bottom:1px solid var(--line);
+    font-weight:600;cursor:pointer;user-select:none;white-space:nowrap;
+  }
+  th:hover{color:var(--gold-bright);}
+  th .si{margin-right:4px;opacity:.3;font-size:10px;transition:opacity .15s;}
+  th.sorted .si{opacity:1;color:var(--gold-bright);}
+  td{
+    padding:13px 20px;font-size:14px;
+    border-bottom:1px solid var(--line);vertical-align:middle;
+  }
+  tr:last-child td{border-bottom:none;}
+  tr.row{cursor:pointer;transition:background .12s;}
+  tr.row:hover{background:var(--panel-2);}
+  tr.row.selected{
+    background:rgba(176,141,87,.08);
+    box-shadow:inset 2px 0 0 var(--gold-bright);
+  }
+  .name{font-weight:600;}
+  .sub-name{font-size:12px;color:var(--muted);}
+  .no-results{padding:32px;text-align:center;color:var(--muted);font-size:14px;}
+
+  /* ── BADGES ── */
+  .badge{
+    font-size:11.5px;padding:4px 10px;border-radius:20px;
+    font-weight:600;display:inline-block;white-space:nowrap;
+  }
+  .b-new{background:rgba(176,141,87,.15);color:var(--gold-bright);border:1px solid var(--line);}
+  .b-wait{background:rgba(154,150,138,.15);color:var(--muted);border:1px solid var(--line);}
+  .b-signed{background:rgba(124,148,115,.15);color:var(--sage);border:1px solid rgba(124,148,115,.3);}
+  .b-stuck{background:rgba(181,82,74,.15);color:#D98A83;border:1px solid rgba(181,82,74,.3);}
+
+  /* ── DETAIL PANEL ── */
+  .client-card{padding:20px;}
+  .client-head{display:flex;align-items:center;gap:12px;margin-bottom:18px;}
+  .avatar{
+    width:46px;height:46px;border-radius:50%;flex-shrink:0;
+    background:linear-gradient(135deg,var(--gold),var(--gold-bright));
+    display:flex;align-items:center;justify-content:center;
+    font-family:'Frank Ruhl Libre',serif;font-weight:700;color:#15171C;font-size:18px;
+  }
+  .client-head .nm{font-weight:700;font-size:16px;}
+  .client-head .meta{font-size:12px;color:var(--muted);margin-top:3px;}
+
+  .insights-list{display:flex;flex-direction:column;gap:10px;}
+  .insight{
+    background:var(--panel-2);border:1px solid var(--gold);
+    border-radius:12px;padding:14px 16px;
+    animation:fadeSlide .25s ease both;
+  }
+  .insight .t{font-size:12px;color:var(--gold-bright);font-weight:700;margin-bottom:4px;}
+  .insight .v{font-family:'Frank Ruhl Libre',serif;font-size:18px;font-weight:700;}
+  .insight .d{font-size:12.5px;color:var(--muted);margin-top:3px;}
+
+  .savings{
+    background:rgba(124,148,115,.1);border:1px solid rgba(124,148,115,.35);
+    border-radius:12px;padding:16px;text-align:center;margin-top:14px;
+    animation:fadeSlide .3s ease .15s both;
+  }
+  .savings .v{
+    font-family:'Frank Ruhl Libre',serif;font-size:26px;
+    font-weight:900;color:var(--sage);
+  }
+  .savings .l{font-size:12px;color:var(--muted);margin-top:2px;}
+
+  .pending-state{
+    text-align:center;padding:32px 16px;color:var(--muted);
+    font-size:13.5px;line-height:1.7;
+  }
+  .pending-state .ic{font-size:32px;margin-bottom:10px;}
+
+  @keyframes fadeSlide{
+    from{opacity:0;transform:translateY(8px)}
+    to{opacity:1;transform:translateY(0)}
+  }
+
+  /* ── FOOTER ── */
+  .footer-note{
+    font-size:13px;color:#6E6A60;
+    border-top:1px solid var(--line);padding-top:18px;max-width:760px;
+  }
+
+  /* ── RESPONSIVE ── */
+  @media(max-width:900px){
+    .app{grid-template-columns:1fr;}
+    .sidebar{
+      display:none;position:fixed;
+      top:0;right:0;bottom:0;z-index:200;
+      width:240px;height:100vh;
+      box-shadow:-10px 0 40px rgba(0,0,0,.5);
+    }
+    .sidebar.open{display:flex;}
+    .mobile-header{display:flex;}
+    .main{padding:20px 16px;}
+    .kpis{grid-template-columns:repeat(2,1fr);}
+    .grid2{grid-template-columns:1fr;}
+    .search{width:100%;}
+    .toolbar{flex-direction:column;align-items:flex-start;}
+    .filters{width:100%;}
+  }
+  @media(max-width:480px){
+    .kpis{grid-template-columns:1fr 1fr;}
+    .kpi .num{font-size:22px;}
+    th:nth-child(2),td:nth-child(2){display:none;}
+    th:nth-child(4),td:nth-child(4){display:none;}
+  }
+</style>
+</head>
+<body>
+
+<div class="sidebar-overlay" id="overlay" onclick="closeSidebar()"></div>
+
+<div class="mobile-header">
+  <button class="hamburger" onclick="toggleSidebar()">☰</button>
+  <div style="font-family:'Frank Ruhl Libre',serif;color:var(--gold-bright);font-size:16px;font-weight:700;">בית סוכן · ניהול</div>
+  <div style="width:36px"></div>
+</div>
+
+<div class="app">
+  <div class="sidebar" id="sidebar">
+    <div class="brand">בית סוכן · ניהול<span>OR SHARON DEMO</span></div>
+    <div class="nav">
+      <a class="active" href="#"><span class="ic"></span> לוח לידים</a>
+      <a href="#"><span class="ic"></span> לקוחות פעילים</a>
+      <a href="#"><span class="ic"></span> מסלקות בתהליך</a>
+      <a href="#"><span class="ic"></span> הצעות שנשלחו</a>
+      <a href="#"><span class="ic"></span> דוחות</a>
+      <a href="#"><span class="ic"></span> הגדרות סוכנים</a>
+    </div>
+  </div>
+
+  <div class="main">
+    <div class="topline">
+      <div>
+        <div class="eyebrow">אופציה A · מערכת מלאה</div>
+        <h1>לוח עבודה — לידים ומסלקות</h1>
+      </div>
+      <div class="pill">נתוני דמו להמחשה בלבד · לא נתונים אמיתיים</div>
+    </div>
+
+    <div class="kpis" id="kpiBlock"></div>
+
+    <div class="toolbar">
+      <div class="filters" id="filterBtns">
+        <button class="filter-btn active" data-filter="all">הכל</button>
+        <button class="filter-btn" data-filter="new">ליד חדש</button>
+        <button class="filter-btn" data-filter="waiting">קישור נשלח</button>
+        <button class="filter-btn" data-filter="signed">חתמו</button>
+        <button class="filter-btn" data-filter="stuck">תקועים</button>
+      </div>
+      <input class="search" type="text" id="searchInput" placeholder="חיפוש לפי שם...">
+    </div>
+
+    <div class="grid2">
+      <div class="panel">
+        <div class="panel-head">
+          <div>
+            <h2>תור עבודה</h2>
+            <div class="sub" id="tableCount"></div>
+          </div>
+        </div>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th data-col="name">לקוח <span class="si">↕</span></th>
+                <th data-col="agent">סוכן <span class="si">↕</span></th>
+                <th data-col="status">סטטוס <span class="si">↕</span></th>
+                <th data-col="updatedOrder">עדכון <span class="si">↕</span></th>
+              </tr>
+            </thead>
+            <tbody id="tbody"></tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="panel" id="detailPanel">
+        <div class="panel-head">
+          <div>
+            <h2 id="panelName"></h2>
+            <div class="sub">תיק לקוח · נתוני מסלקה</div>
+          </div>
+          <span class="badge" id="panelBadge"></span>
+        </div>
+        <div class="client-card" id="panelContent"></div>
+      </div>
+    </div>
+
+    <p class="footer-note">הניתוח מתבצע אוטומטית ברגע שנתוני המסלקה חוזרים מה-API, עוד לפני שהסוכן פותח את התיק. תפקיד הסוכן נשאר מקצועי בלבד: לבחון מה להציע ללקוח ולסגור את השיחה, לא לחפש את הנתונים או לזכור למי להזכיר.</p>
+  </div>
+</div>
+
+<script>
+/* ── DATA ─────────────────────────────────────────────────── */
+const CLIENTS = [
+  {
+    id:1, name:'לירון כהן', initials:'ל', age:34, source:'Meta',
+    agent:'נדב', status:'signed', updated:'לפני 4 דק׳', updatedOrder:4, yearsExp:9,
+    insights:[
+      {title:'כפל ביטוח חיים', value:'2 פוליסות פעילות', detail:'מנורה מבטחים + הפניקס, חפיפת כיסוי מלאה'},
+      {title:'דמי ניהול גבוהים', value:'1.9% מהצבירה', detail:'ממוצע שוק לפרופיל דומה: 1.1%–1.3%'},
+      {title:'קרן ישנה ללא ניוד', value:'מעסיק קודם, 2019', detail:'מומלץ איחוד קרנות'}
+    ],
+    saving:1260
+  },
+  {
+    id:2, name:'מאיה לוי', initials:'מ', age:29, source:'Meta',
+    agent:'שירה', status:'stuck', updated:'אתמול', updatedOrder:1440, yearsExp:4,
+    insights:[
+      {title:'אין ביטוח אובדן כושר עבודה', value:'כיסוי חסר', detail:'רק ביטוח חיים בסיסי דרך המעסיק'},
+      {title:'חיסכון נמוך לגיל', value:'₪38,000 בצבירה', detail:'לפי גיל ושכר: מומלץ לפחות ₪85,000'}
+    ],
+    saving:840
+  },
+  {
+    id:3, name:'עידן ברק', initials:'ע', age:41, source:'Meta',
+    agent:'נדב', status:'waiting', updated:'לפני שעה', updatedOrder:60, yearsExp:15,
+    insights:[
+      {title:'ביטוח מנהלים ישן (לפני 2013)', value:'מקדם קצבה ישן', detail:'כדאי לבחון שמירת הפוליסה הישנה'},
+      {title:'דמי ניהול מופחתים', value:'0.7% מהצבירה', detail:'מצב טוב — ניוד עשוי לפגוע'}
+    ],
+    saving:320
+  },
+  {
+    id:4, name:'נועה שרון', initials:'נ', age:37, source:'Meta',
+    agent:'דניאל', status:'new', updated:'לפני 12 דק׳', updatedOrder:12, yearsExp:11,
+    insights:[], saving:null
+  },
+  {
+    id:5, name:'אורן פרץ', initials:'א', age:52, source:'Meta',
+    agent:'שירה', status:'signed', updated:'לפני 30 דק׳', updatedOrder:30, yearsExp:27,
+    insights:[
+      {title:'קרן פנסיה ותיקה', value:'קצבה מוגדרת', detail:'יש לבחון זכאות מלאה לפני ניוד'},
+      {title:'ביטוח חיים עודף', value:'₪1.8M כיסוי', detail:'ילדים בגירים — כיסוי עשוי לרדת'},
+      {title:'פוטנציאל ניוד קרנות', value:'2 קרנות נפרדות', detail:'ניוד יחסוך בדמי ניהול'}
+    ],
+    saving:2100
+  },
+  {
+    id:6, name:'יובל גולן', initials:'י', age:45, source:'פייסבוק',
+    agent:'נדב', status:'signed', updated:'לפני שעתיים', updatedOrder:120, yearsExp:19,
+    insights:[
+      {title:'כפל ביטוח נכות', value:'3 פוליסות', detail:'שתי פוליסות קבוצתיות + פרטית'},
+      {title:'דמי ניהול גבוהים', value:'2.1% מהצבירה', detail:'מעל ממוצע השוק משמעותית'}
+    ],
+    saving:1840
+  },
+  {
+    id:7, name:'רות אלון', initials:'ר', age:31, source:'Meta',
+    agent:'דניאל', status:'waiting', updated:'לפני 3 שעות', updatedOrder:180, yearsExp:6,
+    insights:[], saving:null
+  },
+  {
+    id:8, name:'שמעון בן דוד', initials:'ש', age:58, source:'הפניה',
+    agent:'שירה', status:'stuck', updated:'לפני 6 ימים', updatedOrder:8640, yearsExp:33,
+    insights:[
+      {title:'קרוב לגיל פרישה', value:'פרישה בעוד 7 שנים', detail:'חשוב לסגור תיק לפני שינויי מס'},
+      {title:'צבירה גבוהה', value:'₪1.2M', detail:'פוטנציאל הגדול ביותר לחיסכון בדמי ניהול'}
+    ],
+    saving:3400
+  },
+  {
+    id:9, name:'טל מזרחי', initials:'ט', age:38, source:'גוגל',
+    agent:'נדב', status:'new', updated:'לפני 2 דק׳', updatedOrder:2, yearsExp:12,
+    insights:[], saving:null
+  },
+  {
+    id:10, name:'אביגיל רוזן', initials:'א', age:44, source:'הפניה',
+    agent:'דניאל', status:'signed', updated:'לפני שעה', updatedOrder:65, yearsExp:20,
+    insights:[
+      {title:'קרן פנסיה פעילה בשתי חברות', value:'מגדל + כלל', detail:'ממולץ לאחד לתנאים מיטביים'},
+      {title:'ביטוח שארים עודף', value:'₪900K כיסוי', detail:'ילד אחד — כיסוי גבוה מהנחוץ'},
+      {title:'דמי ניהול גבוהים', value:'1.7% מהצבירה', detail:'ניתן להוריד ל-0.9% בניהול'}
+    ],
+    saving:2650
+  },
+  {
+    id:11, name:'דרור כץ', initials:'ד', age:55, source:'Meta',
+    agent:'שירה', status:'stuck', updated:'לפני 5 ימים', updatedOrder:7200, yearsExp:30,
+    insights:[
+      {title:'שתי פוליסות ביטוח מנהלים', value:'2003 + 2011', detail:'הפוליסה הישנה עם מקדם מובטח — לא לנייד'},
+      {title:'תגמולים לא מנוצלים', value:'₪18,400 בקופת גמל', detail:'ניתן להעביר לפנסיה ללא אירוע מס'}
+    ],
+    saving:1120
+  }
+];
+
+const STATUS = {
+  new:    {cls:'b-new',    label:'בשיחת אפיון'},
+  waiting:{cls:'b-wait',   label:'קישור נשלח'},
+  signed: {cls:'b-signed', label:'חתם · ממתין לניתוח'},
+  stuck:  {cls:'b-stuck',  label:'ממתין > 3 ימים'}
+};
+
+/* ── STATE ─────────────────────────────────────────────────── */
+let filter = 'all';
+let search = '';
+let sortCol = 'updatedOrder';
+let sortDir = 1;
+let selectedId = 1;
+
+/* ── KPIs ──────────────────────────────────────────────────── */
+function renderKPIs() {
+  const signed = CLIENTS.filter(c => c.status === 'signed').length;
+  const stuck  = CLIENTS.filter(c => c.status === 'stuck').length;
+  const saving = CLIENTS.filter(c => c.saving).reduce((a,c) => a + c.saving, 0);
+  document.getElementById('kpiBlock').innerHTML =
+    kpi(CLIENTS.length, 'לידים החודש') +
+    kpi(signed, 'חתמו על מסלקה') +
+    kpi(stuck, 'ממתינים > 3 ימים') +
+    kpi('₪' + saving.toLocaleString(), 'פוטנציאל חיסכון שאותר');
+}
+const kpi = (n, l) => `<div class="kpi"><div class="num">${n}</div><div class="lbl">${l}</div></div>`;
+
+/* ── TABLE ─────────────────────────────────────────────────── */
+function filtered() {
+  return CLIENTS
+    .filter(c => {
+      if (filter !== 'all' && c.status !== filter) return false;
+      if (search && !c.name.includes(search)) return false;
+      return true;
+    })
+    .sort((a, b) => {
+      const av = a[sortCol], bv = b[sortCol];
+      if (typeof av === 'string') return av.localeCompare(bv, 'he') * sortDir;
+      return (av - bv) * sortDir;
+    });
+}
+
+function renderTable() {
+  const rows = filtered();
+  const tbody = document.getElementById('tbody');
+  document.getElementById('tableCount').textContent = rows.length + ' לידים';
+
+  if (!rows.length) {
+    tbody.innerHTML = '<tr><td colspan="4"><div class="no-results">אין תוצאות לחיפוש זה</div></td></tr>';
+    return;
+  }
+
+  tbody.innerHTML = rows.map(c => {
+    const s = STATUS[c.status];
+    const sel = c.id === selectedId ? ' selected' : '';
+    return `<tr class="row${sel}" onclick="selectClient(${c.id})">
+      <td><div class="name">${c.name}</div><div class="sub-name">ליד ${c.source} · ${c.age}</div></td>
+      <td>${c.agent}</td>
+      <td><span class="badge ${s.cls}">${s.label}</span></td>
+      <td style="color:var(--muted);font-size:13px">${c.updated}</td>
+    </tr>`;
+  }).join('');
+}
+
+/* ── DETAIL PANEL ──────────────────────────────────────────── */
+function renderPanel(id) {
+  const c = CLIENTS.find(x => x.id === id);
+  if (!c) return;
+  const s = STATUS[c.status];
+  document.getElementById('panelName').textContent = c.name;
+  const badge = document.getElementById('panelBadge');
+  badge.className = 'badge ' + s.cls;
+  badge.textContent = s.label;
+
+  let html = `
+    <div class="client-head">
+      <div class="avatar">${c.initials}</div>
+      <div>
+        <div class="nm">${c.name}</div>
+        <div class="meta">גיל ${c.age} · ${c.yearsExp} שנות ותק · ${c.source} · סוכן: ${c.agent}</div>
+      </div>
+    </div>
+  `;
+
+  if (c.insights.length) {
+    html += '<div class="insights-list">' +
+      c.insights.map((ins, i) => `
+        <div class="insight" style="animation-delay:${i * 0.07}s">
+          <div class="t">${ins.title}</div>
+          <div class="v">${ins.value}</div>
+          <div class="d">${ins.detail}</div>
+        </div>
+      `).join('') + '</div>';
+
+    if (c.saving) {
+      html += `<div class="savings">
+        <div class="v">₪${c.saving.toLocaleString()}</div>
+        <div class="l">חיסכון שנתי משוער ללקוח</div>
+      </div>`;
+    }
+  } else {
+    const isPending = c.status === 'waiting';
+    html += `<div class="pending-state">
+      <div class="ic">${isPending ? '⏳' : '🗂️'}</div>
+      <div>${isPending
+        ? 'קישור נשלח ללקוח — ממתין לחתימה.<br>עדיין אין נתוני מסלקה.'
+        : 'לקוח בשלב אפיון — טרם נשלח קישור לחתימה.'
+      }</div>
+    </div>`;
+  }
+
+  document.getElementById('panelContent').innerHTML = html;
+}
+
+/* ── INTERACTIONS ──────────────────────────────────────────── */
+function selectClient(id) {
+  selectedId = id;
+  renderTable();
+  renderPanel(id);
+  if (window.innerWidth <= 900) {
+    document.getElementById('detailPanel').scrollIntoView({behavior:'smooth', block:'start'});
+  }
+}
+
+document.getElementById('filterBtns').addEventListener('click', e => {
+  const btn = e.target.closest('.filter-btn');
+  if (!btn) return;
+  filter = btn.dataset.filter;
+  document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  renderTable();
+});
+
+document.getElementById('searchInput').addEventListener('input', e => {
+  search = e.target.value.trim();
+  renderTable();
+});
+
+document.querySelectorAll('th[data-col]').forEach(th => {
+  th.addEventListener('click', () => {
+    const col = th.dataset.col;
+    if (sortCol === col) sortDir *= -1;
+    else { sortCol = col; sortDir = 1; }
+    document.querySelectorAll('th').forEach(h => {
+      h.classList.remove('sorted');
+      h.querySelector('.si').textContent = '↕';
+    });
+    th.classList.add('sorted');
+    th.querySelector('.si').textContent = sortDir === 1 ? '↑' : '↓';
+    renderTable();
+  });
+});
+
+function toggleSidebar() {
+  document.getElementById('sidebar').classList.toggle('open');
+  document.getElementById('overlay').classList.toggle('open');
+}
+function closeSidebar() {
+  document.getElementById('sidebar').classList.remove('open');
+  document.getElementById('overlay').classList.remove('open');
+}
+
+/* ── INIT ──────────────────────────────────────────────────── */
+renderKPIs();
+renderTable();
+renderPanel(1);
+</script>
+</body>
+</html>
