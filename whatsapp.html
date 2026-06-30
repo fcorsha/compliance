@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>דמו | זרימת וואטסאפ אוטומטית - מסלקה</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Frank+Ruhl+Libre:wght@400;500;700;900&family=Assistant:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#15171C;
+    --ink-soft:#23262E;
+    --ivory:#F7F4EC;
+    --ivory-dim:#EDE8DC;
+    --gold:#B08D57;
+    --gold-bright:#D4AF6A;
+    --sage:#7C9473;
+    --line:rgba(176,141,87,0.25);
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+
+  body{
+    background:radial-gradient(circle at 20% 0%,#1c1f27,var(--ink) 60%);
+    color:var(--ivory);
+    font-family:'Assistant',sans-serif;
+    min-height:100vh;
+    padding:48px 20px;
+    display:flex;flex-direction:column;align-items:center;gap:32px;
+  }
+
+  .eyebrow{
+    font-size:13px;letter-spacing:.18em;text-transform:uppercase;
+    color:var(--gold-bright);font-weight:600;
+  }
+  h1{
+    font-family:'Frank Ruhl Libre',serif;font-weight:700;
+    font-size:clamp(24px,4vw,38px);text-align:center;
+    max-width:680px;line-height:1.25;
+  }
+  .sub{
+    color:#C9C4B6;text-align:center;max-width:540px;
+    font-size:15px;line-height:1.65;
+  }
+
+  /* ── STAGE PROGRESS ── */
+  .stages{
+    display:flex;align-items:center;gap:0;
+    max-width:560px;width:100%;
+  }
+  .stage-item{
+    display:flex;flex-direction:column;align-items:center;gap:6px;
+    flex:1;position:relative;
+  }
+  .stage-item:not(:last-child)::after{
+    content:'';position:absolute;
+    top:10px;left:calc(-50% + 10px);
+    width:calc(100% - 20px);height:1px;
+    background:var(--line);transition:background .4s;
+  }
+  .stage-item.done:not(:last-child)::after{background:var(--gold);}
+  .stage-dot{
+    width:20px;height:20px;border-radius:50%;
+    border:2px solid var(--line);
+    background:var(--ink);
+    display:flex;align-items:center;justify-content:center;
+    font-size:9px;transition:all .35s;
+    position:relative;z-index:1;
+  }
+  .stage-item.done .stage-dot{
+    border-color:var(--gold);background:var(--gold);
+    box-shadow:0 0 10px rgba(176,141,87,.5);
+  }
+  .stage-item.active .stage-dot{
+    border-color:var(--gold-bright);
+    box-shadow:0 0 14px rgba(212,175,106,.6);
+    animation:pulseDot 1.4s ease-in-out infinite;
+  }
+  .stage-lbl{
+    font-size:10px;color:var(--line);text-align:center;
+    transition:color .3s;white-space:nowrap;
+    display:none;
+  }
+  @keyframes pulseDot{
+    0%,100%{box-shadow:0 0 14px rgba(212,175,106,.6)}
+    50%{box-shadow:0 0 22px rgba(212,175,106,.9)}
+  }
+
+  /* ── PHONE ── */
+  .phone{
+    width:380px;max-width:92vw;background:#0c0e12;
+    border-radius:42px;padding:14px;
+    box-shadow:0 40px 80px -20px rgba(0,0,0,.7), 0 0 0 1px var(--line);
+  }
+  .screen{
+    background:linear-gradient(180deg,#0b1c17 0%,#0a1612 100%);
+    border-radius:30px;overflow:hidden;min-height:580px;
+    display:flex;flex-direction:column;
+  }
+  .topbar{
+    background:var(--ink-soft);padding:18px 20px 14px;
+    display:flex;align-items:center;gap:12px;
+    border-bottom:1px solid var(--line);
+  }
+  .avatar{
+    width:38px;height:38px;border-radius:50%;flex-shrink:0;
+    background:linear-gradient(135deg,var(--gold),var(--gold-bright));
+    display:flex;align-items:center;justify-content:center;
+    font-family:'Frank Ruhl Libre',serif;font-weight:700;color:#15171C;font-size:16px;
+  }
+  .topbar .name{font-weight:600;font-size:15px;}
+  .topbar .status{font-size:12px;color:var(--sage);}
+
+  .messages{
+    flex:1;padding:18px 14px;
+    display:flex;flex-direction:column;gap:10px;
+    overflow-y:auto;max-height:520px;
+  }
+  .bubble{
+    max-width:84%;padding:11px 14px;
+    border-radius:16px;font-size:14.5px;line-height:1.5;
+    animation:rise .5s ease both;
+  }
+  .bot{
+    align-self:flex-start;background:#1B1F26;
+    border:1px solid var(--line);border-top-right-radius:4px;color:var(--ivory);
+  }
+  .user{
+    align-self:flex-end;
+    background:linear-gradient(135deg,#2a4036,#223428);
+    border-top-left-radius:4px;color:#E9F1E6;
+  }
+  .system{
+    align-self:center;font-size:11.5px;color:#8C9690;
+    background:rgba(124,148,115,.12);
+    border:1px solid rgba(124,148,115,.3);
+    padding:5px 12px;border-radius:20px;
+    animation:rise .4s ease both;
+  }
+  .card{
+    align-self:flex-start;background:#1B1F26;
+    border:1px solid var(--gold);border-radius:14px;
+    padding:14px;max-width:90%;
+    animation:rise .5s ease both;
+  }
+  .card .ttl{
+    font-family:'Frank Ruhl Libre',serif;font-weight:700;
+    font-size:15px;color:var(--gold-bright);margin-bottom:6px;
+  }
+  .card .row{
+    display:flex;justify-content:space-between;
+    font-size:13px;padding:4px 0;
+    border-bottom:1px dashed rgba(176,141,87,.2);
+  }
+  .card .row:last-of-type{border-bottom:none;}
+  .card .row b{color:var(--sage);font-weight:700;}
+  .btn-card{
+    margin-top:10px;
+    background:linear-gradient(135deg,var(--gold),var(--gold-bright));
+    color:#15171C;text-align:center;padding:9px;
+    border-radius:10px;font-weight:700;font-size:13.5px;cursor:pointer;
+  }
+
+  @keyframes rise{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+
+  /* ── TYPING INDICATOR ── */
+  .typing{
+    align-self:flex-start;background:#1B1F26;
+    border:1px solid var(--line);border-radius:16px;border-top-right-radius:4px;
+    padding:12px 16px;display:flex;gap:5px;align-items:center;
+    animation:rise .3s ease both;
+  }
+  .typing span{
+    width:7px;height:7px;border-radius:50%;
+    background:var(--gold);opacity:.4;
+    animation:blink 1.2s ease-in-out infinite;
+  }
+  .typing span:nth-child(2){animation-delay:.2s;}
+  .typing span:nth-child(3){animation-delay:.4s;}
+  @keyframes blink{0%,100%{opacity:.3}50%{opacity:1}}
+
+  /* ── REPLAY ── */
+  .replay-btn{
+    background:none;border:1px solid var(--line);color:var(--gold-bright);
+    padding:10px 24px;border-radius:10px;font-family:'Assistant',sans-serif;
+    font-size:14px;cursor:pointer;letter-spacing:.05em;
+    transition:all .2s;display:none;
+    align-self:center;
+  }
+  .replay-btn:hover{background:rgba(176,141,87,.1);border-color:var(--gold-bright);}
+  .replay-btn.visible{display:block;animation:rise .4s ease both;}
+
+  /* ── LEGEND ── */
+  .legend{
+    display:flex;gap:20px;flex-wrap:wrap;justify-content:center;max-width:680px;
+  }
+  .legend .item{display:flex;align-items:center;gap:8px;font-size:13px;color:#C9C4B6;}
+  .sw{width:10px;height:10px;border-radius:50%;}
+  .sw.bot{background:#1B1F26;border:1px solid var(--gold);}
+  .sw.user{background:#2a4036;}
+  .sw.sys{background:var(--sage);}
+
+  .footer-note{
+    font-size:13px;color:#7A766B;text-align:center;max-width:540px;
+    border-top:1px solid var(--line);padding-top:18px;line-height:1.7;
+  }
+
+  @media(max-width:420px){
+    body{padding:32px 12px;}
+    .stage-lbl{display:none;}
+  }
+</style>
+</head>
+<body>
+
+<div class="eyebrow">OR SHARON · BUSINESS AUTOMATIONS</div>
+<h1>אופציה B — שכבת אוטומציה<br>וואטסאפ + חתימה דיגיטלית</h1>
+<p class="sub">סימולציה של מה שהלקוח הקצה רואה מרגע שהוא נכנס כליד ועד שהמסלקה חתומה והתובנה הראשונה כבר אצלו.</p>
+
+<!-- STAGE PROGRESS -->
+<div class="stages" id="stages">
+  <div class="stage-item active" data-stage="0">
+    <div class="stage-dot">✓</div>
+  </div>
+  <div class="stage-item" data-stage="1">
+    <div class="stage-dot">✓</div>
+  </div>
+  <div class="stage-item" data-stage="2">
+    <div class="stage-dot">✓</div>
+  </div>
+  <div class="stage-item" data-stage="3">
+    <div class="stage-dot">✓</div>
+  </div>
+  <div class="stage-item" data-stage="4">
+    <div class="stage-dot">✓</div>
+  </div>
+  <div class="stage-item" data-stage="5">
+    <div class="stage-dot">✓</div>
+  </div>
+</div>
+<div style="font-size:12px;color:var(--muted);letter-spacing:.05em;text-align:center;" id="stageLabel">ליד נקלט</div>
+
+<!-- PHONE -->
+<div class="phone">
+  <div class="screen">
+    <div class="topbar">
+      <div class="avatar">ל</div>
+      <div>
+        <div class="name">לירון כהן · ביטוח</div>
+        <div class="status">פעיל עכשיו</div>
+      </div>
+    </div>
+    <div class="messages" id="msgs"></div>
+  </div>
+</div>
+
+<button class="replay-btn" id="replayBtn" onclick="startDemo()">↺ שחק שוב</button>
+
+<div class="legend">
+  <div class="item"><span class="sw bot"></span> הודעת המערכת ללקוח</div>
+  <div class="item"><span class="sw user"></span> תשובת הלקוח</div>
+  <div class="item"><span class="sw sys"></span> אירוע אוטומטי ברקע</div>
+</div>
+
+<p class="footer-note">בתהליך הזה אין שיחת מכירה מלאה מצד הבוט. הוא רק מקצר את השלב הידני: אפיון ראשוני, שליחת קישור לחתימה, מעקב סטטוס ותזכורת, וניתוח ראשוני של הממצאים. הסוכן נכנס לתמונה רק כשיש משהו אמיתי לדבר עליו.</p>
+
+<script>
+/* ── SCRIPT DATA ─────────────────────────────────────────── */
+/*
+  stage 0 = ליד נקלט
+  stage 1 = אפיון
+  stage 2 = שליחת מסלקה
+  stage 3 = חתימה
+  stage 4 = ניתוח
+  stage 5 = מוכן לסוכן
+*/
+const STAGE_LABELS = [
+  'ליד נקלט','שאלות אפיון','שליחת מסלקה','חתימה','ניתוח אוטומטי','מוכן לסוכן'
+];
+
+const SCRIPT = [
+  {type:'system', text:'ליד חדש נקלט מקמפיין Meta · 09:14', stage:0, delay:400},
+  {type:'bot', text:'היי לירון 👋 קיבלנו את הפנייה שלך לגבי בדיקת פנסיה וביטוח. כמה שאלות קצרות ונדע איך לעזור הכי טוב —', stage:1, delay:900},
+  {type:'bot', text:'בן/בת כמה את/ה, ובערך כמה שנים את/ה עובד/ת?', stage:1, delay:700},
+  {type:'user', text:'34, עובד כ-9 שנים, החלפתי מקום עבודה פעם אחת', stage:1, delay:1200},
+  {type:'bot', text:'מעולה. יש לך כבר קרן פנסיה / ביטוח מנהלים שאת/ה מכיר/ה, או שלא בטוח/ה?', stage:1, delay:800},
+  {type:'user', text:'יש לי משהו מהעבודה הקודמת, לא בטוח מה המצב שלו', stage:1, delay:1100},
+  {type:'bot', text:'בדיוק בשביל זה יש מסלקה 🙂 זה בודק לך הכל במקום אחד, חינם וללא התחייבות. אני שולח לך עכשיו קישור לחתימה דיגיטלית, לוקח פחות מדקה', stage:2, delay:900},
+  {type:'card', title:'אישור בדיקת מסלקה', rows:[['סוג בקשה','נספח א׳ + הר ביטוח'],['זמן חתימה משוער','~ 60 שניות'],['סטטוס','ממתין לחתימה']], btn:'לחתימה דיגיטלית →', stage:2, delay:1200},
+  {type:'system', text:'תזכורת אוטומטית נשלחה לאחר 26 שעות', stage:3, delay:1000},
+  {type:'user', text:'חתמתי ✅', stage:3, delay:900},
+  {type:'system', text:'התקבל אישור חתימה · המסלקה נשלפת אוטומטית ברקע', stage:4, delay:700},
+  {type:'system', text:'הסוכן קיבל התראה: "לירון כהן חתם, נתונים בדרך"', stage:4, delay:700},
+  {type:'bot', text:'תודה לירון! קיבלנו את הנתונים, והנה תמונה ראשונית —', stage:5, delay:900},
+  {type:'card', title:'תובנה ראשונית', rows:[['קרנות פעילות שאותרו','2'],['כפל ביטוח חיים','נמצא ✓'],['פוטנציאל הוזלת דמי ניהול','כ-340 ₪ לשנה']], btn:'קביעת שיחה עם הסוכן', stage:5, delay:1200},
+  {type:'system', text:'הסוכן מקבל את הניתוח המלא בלוח העבודה שלו, ויוצר קשר לסגירה', stage:5, delay:800}
+];
+
+/* ── STAGE UTILS ─────────────────────────────────────────── */
+let currentStage = -1;
+
+function setStage(n) {
+  if (n === currentStage) return;
+  currentStage = n;
+  document.getElementById('stageLabel').textContent = STAGE_LABELS[n] || '';
+  document.querySelectorAll('.stage-item').forEach((el, i) => {
+    el.classList.remove('active', 'done');
+    if (i < n) el.classList.add('done');
+    else if (i === n) el.classList.add('active');
+  });
+}
+
+/* ── DEMO ENGINE ─────────────────────────────────────────── */
+let timer = null;
+let idx = 0;
+let typingEl = null;
+
+function clearTyping() {
+  if (typingEl) { typingEl.remove(); typingEl = null; }
+}
+
+function startDemo() {
+  clearTimeout(timer);
+  clearTyping();
+  idx = 0;
+  currentStage = -1;
+  document.getElementById('msgs').innerHTML = '';
+  document.getElementById('replayBtn').classList.remove('visible');
+  document.querySelectorAll('.stage-item').forEach(el => {
+    el.classList.remove('active', 'done');
+  });
+  document.querySelectorAll('.stage-item')[0].classList.add('active');
+  document.getElementById('stageLabel').textContent = STAGE_LABELS[0];
+  tick();
+}
+
+function tick() {
+  if (idx >= SCRIPT.length) {
+    // done — mark all stages complete, show replay
+    document.querySelectorAll('.stage-item').forEach(el => {
+      el.classList.remove('active');
+      el.classList.add('done');
+    });
+    document.getElementById('stageLabel').textContent = 'הושלם ✓';
+    document.getElementById('replayBtn').classList.add('visible');
+    return;
+  }
+
+  const m = SCRIPT[idx];
+
+  // show typing indicator for bot messages
+  if (m.type === 'bot' || m.type === 'card') {
+    showTyping();
+    timer = setTimeout(() => {
+      clearTyping();
+      setStage(m.stage);
+      addMessage(m);
+      idx++;
+      timer = setTimeout(tick, m.delay);
+    }, 650);
+  } else {
+    setStage(m.stage);
+    addMessage(m);
+    idx++;
+    timer = setTimeout(tick, m.delay);
+  }
+}
+
+function showTyping() {
+  const wrap = document.getElementById('msgs');
+  typingEl = document.createElement('div');
+  typingEl.className = 'typing';
+  typingEl.innerHTML = '<span></span><span></span><span></span>';
+  wrap.appendChild(typingEl);
+  wrap.scrollTop = wrap.scrollHeight;
+}
+
+function addMessage(m) {
+  const wrap = document.getElementById('msgs');
+  let el;
+
+  if (m.type === 'system') {
+    el = document.createElement('div');
+    el.className = 'system';
+    el.textContent = m.text;
+  } else if (m.type === 'card') {
+    el = document.createElement('div');
+    el.className = 'card';
+    el.innerHTML =
+      `<div class="ttl">${m.title}</div>` +
+      m.rows.map(r => `<div class="row"><span>${r[0]}</span><b>${r[1]}</b></div>`).join('') +
+      `<div class="btn-card">${m.btn}</div>`;
+  } else {
+    el = document.createElement('div');
+    el.className = 'bubble ' + m.type;
+    el.textContent = m.text;
+  }
+
+  wrap.appendChild(el);
+  wrap.scrollTop = wrap.scrollHeight;
+}
+
+startDemo();
+</script>
+</body>
+</html>
