@@ -18,6 +18,14 @@ if ( ! defined( 'ABSPATH' ) ) exit;
 
 if ( ! defined( 'BMB3_WA_CONTACT' ) ) define( 'BMB3_WA_CONTACT', '972542159482' );
 
+// Grant view_dealer_price to administrators once (no-op on subsequent loads)
+add_action( 'init', function () {
+	$role = get_role( 'administrator' );
+	if ( $role && ! $role->has_cap( 'view_dealer_price' ) ) {
+		$role->add_cap( 'view_dealer_price' );
+	}
+} );
+
 if ( ! function_exists( 'bmb3_img_url' ) ) {
 	function bmb3_img_url( $val ) {
 		if ( empty( $val ) ) return '';
@@ -65,13 +73,14 @@ $car_video_url = trim( (string) ( get_field( 'car_video_url', $pid ) ?? '' ) );
 	$mileage_fmt = ( $mileage !== '' && $mileage !== null ) ? number_format( (float) $mileage ) : '';
 	$is_sold     = ( $status === 'sold' || $status === 'נמכר' );
 
-	$share     = isset( $_GET['share'] );
-	$logged    = is_user_logged_in();
+	$share          = isset( $_GET['share'] );
+	$logged         = is_user_logged_in();
+	$can_see_dealer = current_user_can( 'view_dealer_price' );
 	$share_url = add_query_arg( 'share', '1', urldecode( get_permalink( $pid ) ) );
 $wa_share  = 'https://wa.me/?text=' . rawurlencode( $title . "\n\n" . $share_url );
 	$wa_lines  = 'היי, מעוניין בפרטים על ' . $title . ' (מק"ט ' . $sku . ')';
 	if ( $price_fmt )                          { $wa_lines .= "\n" . 'מחירון: ₪' . $price_fmt; }
-	if ( $sale_fmt && ( $share || $logged ) )  { $wa_lines .= "\n" . 'מחיר מכירה לסוחר: ₪' . $sale_fmt; }
+	if ( $sale_fmt && ( $share || $can_see_dealer ) )  { $wa_lines .= "\n" . 'מחיר מכירה לסוחר: ₪' . $sale_fmt; }
 	$wa_lead   = 'https://wa.me/' . BMB3_WA_CONTACT . '?text=' . rawurlencode( $wa_lines );
 
 	// אייקונים
@@ -142,7 +151,7 @@ $wa_share  = 'https://wa.me/?text=' . rawurlencode( $title . "\n\n" . $share_url
 
 	<div class="bmb3cp<?php echo $is_sold?' is-sold':''; ?>" dir="rtl">
 
-		<?php if ( $logged && ! $share && $sale_fmt && ! $is_sold ) : ?>
+		<?php if ( $can_see_dealer && ! $share && $sale_fmt && ! $is_sold ) : ?>
 		<button id="bmb3cp-eye" type="button" aria-pressed="false" aria-label="הצג או הסתר מחיר סוחר">
 			<svg class="eye-on" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7-10-7-10-7z"/><circle cx="12" cy="12" r="3"/></svg>
 			<svg class="eye-off" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17.94 17.94A10.5 10.5 0 0 1 12 19c-6.5 0-10-7-10-7a18.2 18.2 0 0 1 5.06-5.94M9.9 4.24A9.6 9.6 0 0 1 12 4c6.5 0 10 7 10 7a18.5 18.5 0 0 1-2.16 3.19M1 1l22 22"/><path d="M9.9 9.9a3 3 0 0 0 4.2 4.2"/></svg>
@@ -189,7 +198,7 @@ $wa_share  = 'https://wa.me/?text=' . rawurlencode( $title . "\n\n" . $share_url
 						<div class="bmb3cp-price"><span class="lbl">מחיר מחירון</span><span class="cur">₪</span> <?php echo esc_html($price_fmt); ?></div>
 						<?php endif; ?>
 
-						<?php if ( $sale_fmt && ! $is_sold && ( $share || $logged ) ) : ?>
+						<?php if ( $sale_fmt && ! $is_sold && ( $share || $can_see_dealer ) ) : ?>
 						<div class="bmb3cp-sale<?php echo $share?'':' bmb3cp-dealer'; ?>"><span>מחיר מכירה לסוחר</span><b><?php echo esc_html($sale_fmt); ?> ₪</b></div>
 						<div class="bmb3cp-diff<?php echo $share?'':' bmb3cp-dealer'; ?>" data-sale="<?php echo esc_attr( (float) $sale ); ?>" data-price="<?php echo esc_attr( (float) $price ); ?>">
 							<span class="bmb3cp-diff-emoji">🤑</span>
