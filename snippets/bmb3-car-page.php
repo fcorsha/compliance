@@ -18,11 +18,19 @@ if ( ! defined( 'ABSPATH' ) ) exit;
 
 if ( ! defined( 'BMB3_WA_CONTACT' ) ) define( 'BMB3_WA_CONTACT', '972542159482' );
 
-// Grant view_dealer_price to administrators once (no-op on subsequent loads)
+// Register "dealer" role and keep administrators able to see dealer price
 add_action( 'init', function () {
-	$role = get_role( 'administrator' );
-	if ( $role && ! $role->has_cap( 'view_dealer_price' ) ) {
-		$role->add_cap( 'view_dealer_price' );
+	// Create the dealer role if it doesn't exist yet
+	if ( ! get_role( 'dealer' ) ) {
+		add_role( 'dealer', 'סוחר', array(
+			'read'              => true,   // lets the user log in to WP dashboard (read-only)
+			'view_dealer_price' => true,
+		) );
+	}
+	// Also grant the cap to administrators so they keep seeing dealer price
+	$admin = get_role( 'administrator' );
+	if ( $admin && ! $admin->has_cap( 'view_dealer_price' ) ) {
+		$admin->add_cap( 'view_dealer_price' );
 	}
 } );
 
