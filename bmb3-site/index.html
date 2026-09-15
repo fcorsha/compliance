@@ -5,23 +5,6 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>BMB3 | מימון רכב חוץ בנקאי, איתך בכל עסקה</title>
 <meta name="description" content="BMB3 Entrepreneurship. מימון רכב חוץ בנקאי. אישור מהיר, ליווי אישי, תנאים גמישים.">
-<!-- ===== הסכמת עוגיות: ברירת מחדל = חסום. חייב לרוץ לפני כל תג מדידה ===== -->
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){ dataLayer.push(arguments); }
-  gtag('consent', 'default', {
-    'ad_storage': 'denied',
-    'ad_user_data': 'denied',
-    'ad_personalization': 'denied',
-    'analytics_storage': 'denied',
-    'personalization_storage': 'denied',
-    'functionality_storage': 'granted',
-    'security_storage': 'granted',
-    'wait_for_update': 500
-  });
-  // חוסם את GA גם אם מישהו יטמיע gtag.js ישירות בלי Consent Mode
-  window['ga-disable-GA_MEASUREMENT_ID'] = true;
-</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;500;700;800;900&family=Assistant:wght@400;600;700;800&display=swap" rel="stylesheet">
@@ -206,17 +189,6 @@
   .footer-licenses { font-size: 14px; margin: 14px 0; }
   .footer-bottom { border-top: 1px solid rgba(255,255,255,0.1); padding-top: 20px; margin-top: 20px; font-size: 13px; color: rgba(255,255,255,0.45); }
 
-  #cookie-banner { position: fixed; bottom: 20px; left: 20px; right: 20px; max-width: 560px; margin: 0 auto; background: var(--black); color: #fff; border: 1px solid rgba(46,204,143,0.3); border-radius: 16px; padding: 22px 24px; box-shadow: 0 12px 40px rgba(0,0,0,0.35); z-index: 9998; display: none; }
-  #cookie-banner.show { display: block; animation: cookieUp 0.4s ease; }
-  @keyframes cookieUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
-  #cookie-banner p { font-size: 14px; color: rgba(255,255,255,0.82); margin-bottom: 16px; }
-  #cookie-banner a { color: var(--green-bright); text-decoration: underline; }
-  .cookie-btns { display: flex; gap: 10px; }
-  .cookie-btns button { flex: 1; padding: 11px; border-radius: 9px; font-family: 'Heebo', sans-serif; font-size: 14px; font-weight: 700; cursor: pointer; border: none; transition: all 0.2s; }
-  .cookie-accept { background: var(--green); color: var(--black); }
-  .cookie-accept:hover { background: var(--green-bright); }
-  .cookie-decline { background: transparent; color: rgba(255,255,255,0.7); border: 1px solid rgba(255,255,255,0.2) !important; }
-  .cookie-decline:hover { background: rgba(255,255,255,0.08); }
 
   @media (max-width: 880px) {
     .hero { padding: 70px 0 80px;
@@ -475,20 +447,11 @@
     <div class="footer-links">
       <a href="privacy.html">מדיניות פרטיות</a>
       <a href="accessibility.html">הצהרת נגישות</a>
-      <a href="#" id="cookie-settings-link">הגדרות עוגיות</a>
     </div>
     <div class="footer-licenses">רישיון למתן שירות בנכס פיננסי בסיסי - 65866 · רישיון למתן אשראי בסיסי - 65867</div>
     <div class="footer-bottom">© <span id="year"></span> BMB3 Entrepreneurship Ltd · כל הזכויות שמורות</div>
   </div>
 </footer>
-
-<div id="cookie-banner">
-  <p>אתר זה משתמש בעוגיות (Cookies) לצורך שיפור חוויית הגלישה וניתוח תנועה. המשך גלישה מהווה הסכמה לשימוש בעוגיות. לפרטים ראו את <a href="privacy.html">מדיניות הפרטיות</a> שלנו.</p>
-  <div class="cookie-btns">
-    <button class="cookie-accept" onclick="acceptCookies()">מאשר/ת</button>
-    <button class="cookie-decline" onclick="declineCookies()">דחייה</button>
-  </div>
-</div>
 
 <script src="bmb3-accessibility-widget.js?v=3"></script>
 <script>
@@ -558,114 +521,6 @@
     });
   }, { threshold: 0.12 });
   document.querySelectorAll('.reveal').forEach(function(el){ io.observe(el); });
-
-  // ===== הסכמת עוגיות =====
-  // עד לאישור מפורש: תגי מדידה לא נטענים, Consent Mode על denied,
-  // וכל עוגיית מעקב שכבר קיימת בדפדפן נמחקת.
-  var CONSENT_COOKIE = 'bmb3_cookie_consent';
-
-  // עוגיות מעקב מוכרות שיימחקו כשאין הסכמה
-  var TRACKING_COOKIES = [
-    /^_ga/, /^_gid$/, /^_gat/, /^__utm/,          // Google Analytics
-    /^_gcl/, /^IDE$/, /^test_cookie$/,            // Google Ads
-    /^_fbp$/, /^_fbc$/, /^fr$/,                   // Meta
-    /^_hj/,                                       // Hotjar
-    /^_clck$/, /^_clsk$/, /^MUID$/,               // Microsoft Clarity
-    /^_uet/, /^_tt_/, /^li_/, /^_pin_/            // Bing, TikTok, LinkedIn, Pinterest
-  ];
-
-  function setCookie(name,value,days){ var d=new Date(); d.setTime(d.getTime()+days*24*60*60*1000); document.cookie=name+'='+value+';expires='+d.toUTCString()+';path=/;SameSite=Lax'; }
-  function getCookie(name){ var v=document.cookie.match('(^|;)\\s*'+name+'\\s*=\\s*([^;]+)'); return v?v.pop():''; }
-
-  // מחיקת עוגייה על כל צירוף דומיין ונתיב אפשרי, אחרת שאריות נשארות
-  function deleteCookie(name){
-    var parts = location.hostname.split('.');
-    var domains = ['', location.hostname];
-    for (var i=0; i<parts.length-1; i++) { domains.push('.' + parts.slice(i).join('.')); }
-    var paths = ['/', location.pathname];
-    domains.forEach(function(d){
-      paths.forEach(function(pth){
-        document.cookie = name + '=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=' + pth + (d ? '; domain=' + d : '');
-      });
-    });
-  }
-
-  function purgeTrackingCookies(){
-    document.cookie.split(';').forEach(function(c){
-      var name = c.split('=')[0].trim();
-      if (!name) return;
-      for (var i=0; i<TRACKING_COOKIES.length; i++) {
-        if (TRACKING_COOKIES[i].test(name)) { deleteCookie(name); return; }
-      }
-    });
-    try {
-      Object.keys(window.localStorage).forEach(function(k){
-        if (/^(_ga|_hj|amplitude|mp_)/.test(k)) window.localStorage.removeItem(k);
-      });
-    } catch(e) {}
-  }
-
-  // הפעלת תגי מדידה. סקריפט ממתין נכתב כך:
-  // <script type="text/plain" data-consent="analytics" src="..."><\/script>
-  function activateTrackingScripts(){
-    document.querySelectorAll('script[type="text/plain"][data-consent]').forEach(function(old){
-      var fresh = document.createElement('script');
-      for (var i=0; i<old.attributes.length; i++) {
-        var a = old.attributes[i];
-        if (a.name === 'type' || a.name === 'data-consent') continue;
-        fresh.setAttribute(a.name, a.value);
-      }
-      fresh.text = old.text;
-      old.parentNode.replaceChild(fresh, old);
-    });
-  }
-
-  function grantConsent(){
-    if (typeof gtag === 'function') {
-      gtag('consent', 'update', {
-        'ad_storage': 'granted',
-        'ad_user_data': 'granted',
-        'ad_personalization': 'granted',
-        'analytics_storage': 'granted',
-        'personalization_storage': 'granted'
-      });
-    }
-    window['ga-disable-GA_MEASUREMENT_ID'] = false;
-    activateTrackingScripts();
-  }
-
-  function denyConsent(){
-    if (typeof gtag === 'function') {
-      gtag('consent', 'update', {
-        'ad_storage': 'denied',
-        'ad_user_data': 'denied',
-        'ad_personalization': 'denied',
-        'analytics_storage': 'denied',
-        'personalization_storage': 'denied'
-      });
-    }
-    window['ga-disable-GA_MEASUREMENT_ID'] = true;
-    purgeTrackingCookies();
-  }
-
-  function showBanner(){ document.getElementById('cookie-banner').classList.add('show'); }
-  function hideBanner(){ document.getElementById('cookie-banner').classList.remove('show'); }
-
-  function acceptCookies() { setCookie(CONSENT_COOKIE,'accepted',365); grantConsent(); hideBanner(); }
-  function declineCookies() { setCookie(CONSENT_COOKIE,'declined',365); denyConsent(); hideBanner(); }
-
-  // הרצה בטעינת הדף לפי הבחירה השמורה
-  (function() {
-    var choice = getCookie(CONSENT_COOKIE);
-    if (choice === 'accepted') { grantConsent(); }
-    else { denyConsent(); if (choice !== 'declined') { setTimeout(showBanner, 800); } }
-  })();
-
-  // אפשרות לשנות את הבחירה בכל רגע, דרישה של תיקון 13
-  document.getElementById('cookie-settings-link').addEventListener('click', function(e){
-    e.preventDefault();
-    showBanner();
-  });
 </script>
 <!-- OR SHARON · Agency Footer Credit -->
 <style>
